@@ -1,0 +1,458 @@
+---
+title: "integrate data from adult mLN and iLN"
+author: "A.DeMartin"
+date: "2025-05-06"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+## load object
+```{r load merged object all, eval=FALSE}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds"
+seuratM <- readRDS(fileNam)
+table(seuratM$dataset)
+table(seuratM$RNA_snn_res.0.25)
+table(seuratM$orig.ident)
+```
+
+## subset adult
+```{r subset adult datasets, eval=FALSE}
+seuratA <- subset(seuratM, timepoint == "8w")
+table(seuratM$timepoint)
+table(seuratA$timepoint)
+
+#rerun seurat
+seuratA <- NormalizeData (object = seuratA)
+seuratA <- FindVariableFeatures(object = seuratA)
+seuratA <- ScaleData(object = seuratA, verbose = TRUE)
+seuratA <- RunPCA(object=seuratA, npcs = 30, verbose = FALSE)
+seuratA <- RunTSNE(object=seuratA, reduction="pca", dims = 1:20)
+seuratA <- RunUMAP(object=seuratA, reduction="pca", dims = 1:20)
+seuratA <- FindNeighbors(object = seuratA, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratA <- FindClusters(object = seuratA, resolution = res[i], random.seed = 1234)
+}
+```
+
+## plot umaps
+### clustering
+```{r umap clustering pre filter, eval=FALSE}
+DimPlot(seuratA, reduction = "umap", group.by = "RNA_snn_res.0.25" ,
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+### location
+```{r umap location pre filter, eval=FALSE}
+DimPlot(seuratA, reduction = "umap", group.by = "location" ,
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+## calculate cluster marker genes pre filter
+```{r cluster marker genes pre filter, eval=FALSE}
+## calculate marker genes
+Idents(seuratA) <- seuratA$RNA_snn_res.0.25
+levels(seuratA)
+
+markerGenes <- FindAllMarkers(seuratA, only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01) 
+```
+
+## features pre filter
+```{r featureplot sel genes pre filter, eval=FALSE}
+selGenesViolin <- c("ENSMUSG00000020717.Pecam1", "ENSMUSG00000026395.Ptprc", "ENSMUSG00000031004.Mki67")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratA, reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+
+## filter object
+```{r filter object, eval=FALSE}
+## filter out Pecam1 (cluster #6) and Ptprc (cluster #9 and #10) Mki67 (#8) and pancreatic cells (#11)
+table(seuratA$RNA_snn_res.0.25)
+seuratF <- subset(seuratA, RNA_snn_res.0.25 %in% c("6", "8" ,"9", "10", "11"), invert = TRUE)
+table(seuratF$RNA_snn_res.0.25)
+
+seuratA <- seuratF
+remove(seuratF)
+```
+
+## rerun seurat after filter
+```{r rerun seurat after filter, eval=FALSE}
+seuratA <- NormalizeData (object = seuratA)
+seuratA <- FindVariableFeatures(object = seuratA)
+seuratA <- ScaleData(object = seuratA, verbose = TRUE)
+seuratA <- RunPCA(object=seuratA, npcs = 30, verbose = FALSE)
+seuratA <- RunTSNE(object=seuratA, reduction="pca", dims = 1:20)
+seuratA <- RunUMAP(object=seuratA, reduction="pca", dims = 1:20)
+seuratA <- FindNeighbors(object = seuratA, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratA <- FindClusters(object = seuratA, resolution = res[i], random.seed = 1234)
+}
+```
+
+## save object
+```{r save merged seurat object adultonly, eval=FALSE}
+### save seurat object
+saveRDS(seuratA, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.rds")
+```
+
+## load object adult
+```{r load merged object adultonly}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.rds"
+seuratA <- readRDS(fileNam)
+table(seuratA$dataset)
+```
+
+## set color vectors 
+```{r set color vector}
+colLoc <- c("#61baba", "#ba6161")
+names(colLoc) <- unique(seuratA$location)
+
+colLab <- c("#42a071", "#900C3F","#b66e8d", "#8F7700FF", "#61a4ba","#003C67FF",
+            "#e3953d","#ab5711", "#714542", "#b6856e", "#FFC300")
+
+names(colLab) <- c("FDC", "TRC", "TBRC", "IFRC", "medRC1" , "medRC2",
+                   "PRC1", "PRC2", "Pi16+RC", "PRC3", "VSMC")
+
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+```
+
+## plot umaps
+### clustering
+```{r umap clustering}
+DimPlot(seuratA, reduction = "umap", group.by = "RNA_snn_res.0.25" ,
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+### location
+```{r umap location}
+DimPlot(seuratA, reduction = "umap", group.by = "location" ,
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+## features
+```{r featureplot sel genes}
+selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
+                    "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
+                    "ENSMUSG00000042436.Mfap4", "ENSMUSG00000071005.Ccl19",
+                    "ENSMUSG00000016494.Cd34", "ENSMUSG00000001119.Col6a1",
+                    "ENSMUSG00000020241.Col6a2","Rosa26eyfp.Rosa26eyfp", 
+                    "ENSMUSG00000023078.Cxcl13", "ENSMUSG00000032135.Mcam")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratA, reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+## integrate data across location
+```{r integrate, eval=FALSE, include=TRUE}
+Idents(seuratA) <- seuratA$location
+
+seurat.list <- SplitObject(object = seuratA, split.by = "location")
+for (i in 1:length(x = seurat.list)) {
+    seurat.list[[i]] <- NormalizeData(object = seurat.list[[i]],
+                                      verbose = FALSE)
+    seurat.list[[i]] <- FindVariableFeatures(object = seurat.list[[i]], 
+        selection.method = "vst", nfeatures = 2000, verbose = FALSE)
+}
+
+seurat.anchors <- FindIntegrationAnchors(object.list = seurat.list, dims = 1:20)
+seuratA.int <- IntegrateData(anchorset = seurat.anchors, dims = 1:20)
+DefaultAssay(object = seuratA.int) <- "integrated"
+
+## rerun seurat
+seuratA.int <- ScaleData(object = seuratA.int, verbose = FALSE,
+                         features = rownames(seuratA.int))
+seuratA.int <- RunPCA(object = seuratA.int, npcs = 20, verbose = FALSE)
+seuratA.int <- RunTSNE(object = seuratA.int, recuction = "pca", dims = 1:20)
+seuratA.int <- RunUMAP(object = seuratA.int, recuction = "pca", dims = 1:20)
+
+seuratA.int <- FindNeighbors(object = seuratA.int, reduction = "pca", dims = 1:20)
+res <- c(0.6, 0.8, 0.4, 0.25)
+for (i in 1:length(res)){
+  seuratA.int <- FindClusters(object = seuratA.int, resolution = res[i],
+                              random.seed = 1234)
+}
+```
+
+## save int object adult
+```{r save int object adultonly, eval=FALSE, include=TRUE}
+saveRDS(seuratA.int, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds")
+```
+
+## load int object adult
+```{r load int object adultonly}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds"
+seuratA.int <- readRDS(fileNam)
+```
+
+
+```{r set default assay int object}
+DefaultAssay(object = seuratA.int) <- "RNA"
+seuratA.int$intCluster <- seuratA.int$integrated_snn_res.0.4
+Idents(seuratA.int) <- seuratA.int$intCluster
+
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f", "#25328a", "#b6856e",
+            "#ba6161", "#20714a", "#0073C2FF", "#EFC000FF", "#868686FF", 
+            "#CD534CFF","#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF",
+            "#A73030FF", "#4A6990FF")[1:length(unique(seuratA.int$intCluster))]
+names(colPal) <- unique(seuratA.int$intCluster)
+```
+
+## assign label
+```{r assign label int clusters}
+seuratA.int$label <- "label"
+seuratA.int$label[which(seuratA.int$intCluster == "0")] <- "MedRC/IFRC"
+seuratA.int$label[which(seuratA.int$intCluster == "1")] <- "actMedRC"
+seuratA.int$label[which(seuratA.int$intCluster == "2")] <- "TBRC"
+seuratA.int$label[which(seuratA.int$intCluster == "3")] <- "TRC"
+seuratA.int$label[which(seuratA.int$intCluster == "4")] <- "MedRC"
+seuratA.int$label[which(seuratA.int$intCluster == "5")] <- "PRC"
+seuratA.int$label[which(seuratA.int$intCluster == "6")] <- "FDC/MRC" 
+seuratA.int$label[which(seuratA.int$intCluster == "7")] <- "Pi16+RC"
+seuratA.int$label[which(seuratA.int$intCluster == "8")] <- "VSMC"
+
+table(seuratA.int$label)
+
+colLab2 <- colLab
+colLab <- c("#42a071", "#900C3F","#b66e8d", "#61a4ba", "#424671", "#003C67FF",
+            "#e3953d", "#714542", "#b6856e", "#FFC300")
+
+names(colLab) <- c("FDC/MRC", "TRC", "TBRC", "MedRC/IFRC", "MedRC" , "actMedRC",
+                   "PRC", "Pi16+RC", "VSMC")
+```
+
+### Dimplot int data
+### clustering
+```{r umap int clustering}
+DimPlot(seuratA.int, reduction = "umap",
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+### label
+```{r umap int label}
+DimPlot(seuratA.int, reduction = "umap", group.by = "label", cols = colLab)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+
+DimPlot(seuratA.int, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = T)+
+  theme_void()
+```
+
+### label split by location
+```{r umap int label split by location}
+DimPlot(seuratA.int, reduction = "umap", group.by = "label", cols = colLab,
+        split.by = "location")+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+
+DimPlot(seuratA.int, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, split.by = "location", shuffle = T)+
+  theme_void()
+```
+
+
+### location
+```{r umap int location}
+DimPlot(seuratA.int, reduction = "umap", group.by = "location", cols = colLoc,
+        pt.size = 0.1, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+
+DimPlot(seuratA.int, reduction = "umap", group.by = "location", pt.size=0.5,
+        cols = colLoc, split.by = "location", shuffle = T)+
+  theme_void()
+```
+
+## heatmap funcion
+```{r heatmap funcion}
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(gsub("(^.*?_)","",
+                                       colnames(logNormExpresMa)))%>%
+    dplyr::mutate(celltype=gsub("(_.*$)","",colnames(logNormExpresMa)))
+  colnames(annotation_col)[1] <- "col1"
+  annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub(".*_","",col1)) %>%
+    dplyr::select(cond, celltype)
+  rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colVecCond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+```
+
+
+## cluster characterization
+```{r characterize clusters heatmap, fig.height=15, fig.width=5}
+seuratA.int <- JoinLayers(seuratA.int)
+Idents(seuratA.int) <- seuratA.int$intCluster
+
+seuratAint_markers <- FindAllMarkers(seuratA.int, only.pos = T, logfc.threshold = 0.25)
+
+### plot DE genes top 10 avg logFC
+markerAll <- seuratAint_markers %>% group_by(cluster) %>% 
+  mutate(geneID = gene) %>% top_n(10, avg_log2FC) %>%
+  mutate(gene=gsub(".*\\.", "",  geneID)) %>% 
+  filter(nchar(gene)>1)
+
+grpCnt <- markerAll %>% group_by(cluster) %>% summarise(cnt=n())
+gapR <- data.frame(cluster=unique(markerAll$cluster)) %>% 
+  left_join(.,grpCnt, by="cluster") %>% mutate(cumSum=cumsum(cnt)) 
+ordVec <- levels(seuratA.int)
+
+pOut <- avgHeatmap(seurat = seuratA.int, selGenes = markerAll,
+                  colVecIdent = colPal, 
+                  ordVec=ordVec,
+                  gapVecR=gapR$cumSum, gapVecC=NULL,cc=T,
+                  cr=F, condCol=F)
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

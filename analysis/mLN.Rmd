@@ -1,0 +1,163 @@
+---
+title: "mLNEYFPpos"
+author: "A.DeMartin"
+date: "2025-04-29"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+## load object EYFPonly
+```{r load merged object EYFPonly, eval=FALSE, include=TRUE}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFPonly_seurat.rds"
+seuratEYFP <- readRDS(fileNam)
+table(seuratEYFP$dataset)
+table(seuratEYFP$RNA_snn_res.0.25)
+table(seuratEYFP$orig.ident)
+```
+
+## subset mLN
+```{r subset mLN, eval=FALSE, include=TRUE}
+
+table(seuratEYFP$location)
+seuratmLN <- subset(seuratEYFP, location == "mLN")
+table(seuratmLN$orig.ident)
+
+#rerun seurat
+seuratmLN <- NormalizeData (object = seuratmLN)
+seuratmLN <- FindVariableFeatures(object = seuratmLN)
+seuratmLN <- ScaleData(object = seuratmLN, verbose = TRUE)
+seuratmLN <- RunPCA(object=seuratmLN, npcs = 30, verbose = FALSE)
+seuratmLN <- RunTSNE(object=seuratmLN, reduction="pca", dims = 1:20)
+seuratmLN <- RunUMAP(object=seuratmLN, reduction="pca", dims = 1:20)
+seuratmLN <- FindNeighbors(object = seuratmLN, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratmLN <- FindClusters(object = seuratmLN, resolution = res[i], random.seed = 1234)
+}
+```
+
+## save object
+```{r save object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratmLN, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_mLN_seurat.rds")
+```
+
+## load object mLN
+```{r load object mLN}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_mLN_seurat.rds"
+seuratmLN <- readRDS(fileNam)
+table(seuratmLN$dataset)
+table(seuratmLN$RNA_snn_res.0.25)
+table(seuratmLN$orig.ident)
+```
+
+##set color vectors 
+```{r set color vector}
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+```
+
+## plot umaps
+```{r umap}
+Idents(seuratmLN) <- seuratmLN$RNA_snn_res.0.25
+DimPlot(seuratmLN, reduction = "umap", pt.size = 0.1, label = TRUE) 
+
+Idents(seuratmLN) <- seuratmLN$timepoint
+DimPlot(seuratmLN, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint) 
+DimPlot(seuratmLN, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE) 
+```
+
+## calculate cluster marker genes
+```{r marker RNA_snn_res.0.25, include=TRUE, eval=FALSE}
+##cluster marker
+Idents(seuratmLN) <- seuratmLN$RNA_snn_res.0.25
+markerGenes <- FindAllMarkers(seuratmLN, only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01)
+#save table
+write.table(markerGenes, 
+            file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/analysis/markerGenesRNA_snn_res.0.25",
+            sep="\t",
+            quote=F,
+            row.names=F,
+            col.names=T)
+```
+
+
+## plot features
+```{r featureplot sel genes}
+selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
+                    "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
+                    "ENSMUSG00000042436.Mfap4", "ENSMUSG00000071005.Ccl19",
+                    "ENSMUSG00000016494.Cd34", "ENSMUSG00000001119.Col6a1",
+                    "ENSMUSG00000020241.Col6a2","Rosa26eyfp.Rosa26eyfp", 
+                    "ENSMUSG00000023078.Cxcl13")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratmLN, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+## plot features-2
+```{r featureplot sel genes-2}
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratEYFP, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"))+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

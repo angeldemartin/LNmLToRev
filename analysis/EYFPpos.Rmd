@@ -1,0 +1,160 @@
+---
+title: "EYFPpos"
+author: "A.DeMartin"
+date: "2025-04-28"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+## load object
+```{r load merged object, eval=FALSE, include=TRUE}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds"
+seuratM <- readRDS(fileNam)
+table(seuratM$dataset)
+table(seuratM$RNA_snn_res.0.25)
+table(seuratM$orig.ident)
+```
+
+## subset EYFP+ mLN
+```{r subset EYFPpos, eval=FALSE, include=TRUE}
+seuratSub <- subset(seuratM, Rosa26eyfp.Rosa26eyfp>0)
+eyfpPos <- colnames(seuratSub)
+
+seuratM$EYFP <-"neg"
+seuratM$EYFP[which(colnames(seuratM)%in%eyfpPos)] <- "pos"
+
+table(seuratM$dataset, seuratM$EYFP)
+
+seuratEYFP <- subset(seuratM, EYFP == "pos")
+table(seuratEYFP$orig.ident)
+
+#rerun seurat
+seuratEYFP <- NormalizeData (object = seuratEYFP)
+seuratEYFP <- FindVariableFeatures(object = seuratEYFP)
+seuratEYFP <- ScaleData(object = seuratEYFP, verbose = TRUE)
+seuratEYFP <- RunPCA(object=seuratEYFP, npcs = 30, verbose = FALSE)
+seuratEYFP <- RunTSNE(object=seuratEYFP, reduction="pca", dims = 1:20)
+seuratEYFP <- RunUMAP(object=seuratEYFP, reduction="pca", dims = 1:20)
+seuratEYFP <- FindNeighbors(object = seuratEYFP, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratEYFP <- FindClusters(object = seuratEYFP, resolution = res[i], random.seed = 1234)
+}
+```
+
+## save object
+```{r save merged seurat object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratEYFP, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFPonly_seurat.rds")
+```
+
+## load object EYFPonly
+```{r load merged object EYFPonly}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFPonly_seurat.rds"
+seuratEYFP <- readRDS(fileNam)
+table(seuratEYFP$dataset)
+table(seuratEYFP$RNA_snn_res.0.25)
+table(seuratEYFP$orig.ident)
+```
+
+##set color vectors 
+```{r set color vector}
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+```
+
+## plot umaps
+```{r umap}
+Idents(seuratEYFP) <- seuratEYFP$RNA_snn_res.0.25
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, label = TRUE) 
+
+Idents(seuratEYFP) <- seuratEYFP$timepoint
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint) 
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE) 
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE, split.by = "timepoint") 
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE, split.by = "location") 
+
+Idents(seuratEYFP) <- seuratEYFP$location
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = collocation) 
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = collocation, shuffle = TRUE) 
+DimPlot(seuratEYFP, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = collocation, shuffle = TRUE, split.by = "location") 
+```
+
+## plot features
+```{r featureplot sel genes}
+selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
+                    "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
+                    "ENSMUSG00000042436.Mfap4", "ENSMUSG00000071005.Ccl19",
+                    "ENSMUSG00000016494.Cd34", "ENSMUSG00000001119.Col6a1",
+                    "ENSMUSG00000020241.Col6a2","Rosa26eyfp.Rosa26eyfp", 
+                    "ENSMUSG00000023078.Cxcl13")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratEYFP, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+## plot features-2
+```{r featureplot sel genes-2}
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratEYFP, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"))+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

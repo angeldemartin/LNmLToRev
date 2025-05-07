@@ -1,0 +1,265 @@
+---
+title: "Merge_QC_umaps"
+author: "A.DeMartin"
+date: "2025-04-27"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+#start pre-processing
+
+## load files and merge
+```{r load files, eval=FALSE, include=TRUE}
+### load and merge all 
+basedir <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/files/"
+fileNamList <- list.files(path = basedir)
+
+for(i in 1:length(fileNamList)){
+  seuratS <- readRDS(paste0(basedir, fileNamList[i]))
+  seuratS@assays$RNA@layers$scale.data <- NULL ##remove scale data slot to reduce size of objects
+  if(exists("seuratM")){
+    seuratM <- merge(x = seuratM, y = seuratS)
+    cat("Merged", i, "of", length(fileNamList), "files - Total cells:", ncol(seuratM), "\n")
+  }else{
+    seuratM <- seuratS
+    cat("Initialized with first Seurat object:", fileNamList[i], "\n")
+  }
+}
+
+remove(seuratS)
+table(seuratM$dataset)
+table(seuratM$orig.ident)
+
+#join layers
+seuratM <- JoinLayers(seuratM)
+
+#rerun seurat
+seuratM <- NormalizeData (object = seuratM)
+seuratM <- FindVariableFeatures(object = seuratM)
+seuratM <- ScaleData(object = seuratM, verbose = TRUE)
+seuratM <- RunPCA(object=seuratM, npcs = 30, verbose = FALSE)
+seuratM <- RunTSNE(object=seuratM, reduction="pca", dims = 1:20)
+seuratM <- RunUMAP(object=seuratM, reduction="pca", dims = 1:20)
+seuratM <- FindNeighbors(object = seuratM, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratM <- FindClusters(object = seuratM, resolution = res[i], random.seed = 1234)
+}
+```
+
+## save object
+```{r save merged seurat object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratM, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds")
+```
+
+# explore merged seurat object
+
+## load object
+```{r load merged object}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds"
+seuratM <- readRDS(fileNam)
+table(seuratM$dataset)
+table(seuratM$RNA_snn_res.0.25)
+table(seuratM$orig.ident)
+```
+
+## add metadata
+```{r add metadata}
+# add any type of metadata
+## timepoint
+seuratM$timepoint <- "timepoint"
+seuratM$timepoint[grepl("_E18_", seuratM$dataset)] <- "E18"
+seuratM$timepoint[grepl("_P7_", seuratM$dataset)] <- "P7"
+seuratM$timepoint[grepl("_3wk_", seuratM$dataset)] <- "3w"
+seuratM$timepoint[grepl("_P7_", seuratM$dataset)] <- "P7"
+seuratM$timepoint[grepl("_Adult_", seuratM$dataset)] <- "8w"
+table(seuratM$timepoint)
+ordtimepoint <- c("E18", "P7", "3w", "8w")
+seuratM$timepoint <- factor(seuratM$timepoint, levels=ordtimepoint)
+table(seuratM$timepoint)
+
+## location
+seuratM$location <- "location"
+seuratM$location[grepl("_mLN_", seuratM$dataset)] <- "mLN"
+seuratM$location[grepl("_iLN_|_pLN_", seuratM$dataset)] <- "iLN"
+table(seuratM$location)
+
+###combined slots
+seuratM$timepoint_location <- paste0(seuratM$timepoint, '_', seuratM$location)
+table(seuratM$timepoint_location)
+```
+
+##set color vectors 
+```{r set color vector}
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+```
+
+## QC merged 
+```{r QC dataset,  fig.height=10, fig.width=20}
+# Extract meta.data from the Seurat object
+meta.data <- seuratM@meta.data
+# Create the density plot
+ptotalpat <- ggplot(data = meta.data, aes(x = total, color = dataset, fill = dataset)) +
+  geom_density(alpha = 0.2) +
+  #scale_fill_manual(values = colpat) +
+  #scale_color_manual(values = colpat) +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 100) +
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 10))
+
+pdetectedpat <- ggplot(data = meta.data, aes(x = detected, color = dataset, fill = dataset)) +
+  geom_density(alpha = 0.2) +
+ #scale_fill_manual(values = colpat) +
+  #scale_color_manual(values = colpat) +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 100) +
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 10))
+
+# Return the plots as a list
+list(ptotalpat, pdetectedpat)
+```
+## QC merged 
+```{r QC RNA_snn_res.0.25,  fig.height=10, fig.width=20}
+# Extract meta.data from the Seurat object
+meta.data <- seuratM@meta.data
+# Create the density plot
+ptotalpat <- ggplot(data = meta.data, aes(x = total, color = RNA_snn_res.0.25, fill = RNA_snn_res.0.25)) +
+  geom_density(alpha = 0.2) +
+  #scale_fill_manual(values = colpat) +
+  #scale_color_manual(values = colpat) +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 100) +
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 10))
+
+pdetectedpat <- ggplot(data = meta.data, aes(x = detected, color = RNA_snn_res.0.25, fill = RNA_snn_res.0.25)) +
+  geom_density(alpha = 0.2) +
+ #scale_fill_manual(values = colpat) +
+  #scale_color_manual(values = colpat) +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 100) +
+  theme(legend.text = element_text(size = 10), legend.title = element_text(size = 10))
+
+# Return the plots as a list
+list(ptotalpat, pdetectedpat)
+```
+
+```{r cellnumber circle dataset, fig.height=20, fig.width=40}
+cell_count <- data.frame(table(seuratM$dataset))
+colnames(cell_count) <- c("dataset", "Freq")
+hsize <- 1.5
+
+ggplot(cell_count, aes(x = hsize, y = Freq, fill = dataset)) +
+  #scale_fill_manual(values = colpat2) +
+  geom_col(color = "white") +
+  coord_polar(theta = "y") +
+  xlim(c(0.2, hsize + 0.5)) +
+  theme_void() +
+  ggtitle("cell number") +
+  theme(plot.title = element_text(hjust = 0.5, size = 10), legend.text = element_text(size = 10), legend.title = element_text(size = 10)) +
+  geom_text(aes(label = Freq), position = position_stack(vjust = 0.5), size = 10)
+```
+
+## plot umaps
+```{r umap}
+Idents(seuratM) <- seuratM$RNA_snn_res.0.25
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, label = TRUE) 
+
+Idents(seuratM) <- seuratM$timepoint
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE, split.by = "timepoint") 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = coltimepoint, shuffle = TRUE, split.by = "location") 
+
+Idents(seuratM) <- seuratM$location
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = collocation) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = collocation, shuffle = TRUE) 
+DimPlot(seuratM, reduction = "umap", pt.size = 0.1, raster = FALSE, cols = collocation, shuffle = TRUE, split.by = "location") 
+```
+## plot features
+```{r featureplot sel genes}
+selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
+                    "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
+                    "ENSMUSG00000042436.Mfap4", "ENSMUSG00000071005.Ccl19",
+                    "ENSMUSG00000016494.Cd34", "ENSMUSG00000001119.Col6a1",
+                    "ENSMUSG00000020241.Col6a2","Rosa26eyfp.Rosa26eyfp", 
+                    "ENSMUSG00000023078.Cxcl13")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratM, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+## plot features-2
+```{r featureplot sel genes-2}
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratM, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"))+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

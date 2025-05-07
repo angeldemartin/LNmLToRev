@@ -1,0 +1,89 @@
+---
+title: "characterize adult_mLN_iLN"
+author: "A.DeMartin"
+date: "2025-05-06"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+## load int object adult
+```{r load int object adultonly}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds"
+seuratA.int <- readRDS(fileNam)
+```
+
+```{r dotplot, fig.height=8, fig.width=6}
+seurat_markers <- data.frame(gene=c("Fcgr2b","Fcer2a","Cr2","Cxcl13",
+                                    "Slc7a11", "Ccl19", 
+                                    "Ccl21a", "Fmod", "Grem1", "Bmp4",
+                                    "Tnfsf11", "Fbn2",
+                                    "Pltp" ,"C1rb", "Lepr", "Ptn",
+                                     "Nr4a1", "Cxcl10", "Cxcl9", 
+                                    "F3", "Fbln1", "Gdf10", "Adamtsl1", 
+                                    "Col15a1",  "Cd34",
+                                    "Igfbp6", "Pi16", "Thy1", "Dpp4", "Sema3c", 
+                                    "Acta2", "Myh11", "Mcam", "Itga7", "Esam", "Rgs4"
+                                    ))
+
+genes <- data.frame(geneID=rownames(seuratA.int)) %>%
+  mutate(gene=gsub(".*\\.", "",  geneID)) 
+
+markerAll <- seurat_markers %>% left_join(., genes, by="gene")
+
+## Dotplot all
+seuratA.int$label <- factor(seuratA.int$label, levels = names(colLab))
+Idents(seuratA.int) <- seuratA.int$label
+
+DotPlot(seuratA.int, assay="RNA", features = rev(markerAll$geneID), scale =T,
+        cluster.idents = F) +
+  scale_color_viridis_c() +
+  coord_flip() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_x_discrete(breaks=rev(markerAll$geneID), labels=rev(markerAll$gene)) +
+  xlab("") + ylab("")
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

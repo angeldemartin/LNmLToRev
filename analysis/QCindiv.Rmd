@@ -1,0 +1,135 @@
+---
+title: "QCindiv"
+author: "A.DeMartin"
+date: "2025-04-27"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+QualityControl-1
+```{r QC1}
+##total is the sum of all counts while, detected means the number of different genes found
+##(e.g. if gene A=3, gene B=4, gene C = 0: total = 7 and detected = 2)
+
+##plot histograms for individual samples 
+##load seurat files 
+
+# Define the base directory and the list of files
+basedir <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/files/"
+fileNamList <- list.files(path = basedir)
+
+# Define the function to load the Seurat object, convert to SCE, and plot histograms
+process_file <- function(file) {
+# Load the Seurat object
+seurat <- readRDS(paste0(basedir, file))
+  
+# Display the dataset counts
+print(table(seurat$dataset))
+  
+# Convert Seurat object to SingleCellExperiment object
+sce <- as.SingleCellExperiment(seurat)
+  
+# Define the function to plot histograms
+plotQC5 <- function(sce, feature, title){
+gghistogram(data = as.data.frame(colData(sce)),
+                     x = feature,
+                     bins = 100,
+                     fill = "#BE3144",
+                     legend = "right", 
+                     color = "black") +
+ggtitle(title)
+  }
+  
+# Plot histograms for "total" and "detected" features
+hist_total <- plotQC5(sce, "total",  paste(file))
+hist_detected <- plotQC5(sce, "detected", paste(file))
+  
+# Return the plots as a list
+list(hist_total, hist_detected)
+}
+
+# Apply the function to each file in the list
+lapply(fileNamList, process_file)
+```
+
+QualityControl-2
+```{r QC2}
+##total is the sum of all counts while, detected means the number of different genes found
+##(e.g. if gene A=3, gene B=4, gene C = 0: total = 7 and detected = 2)
+
+basedir <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/files/"
+fileNamList <- list.files(path = basedir)
+
+QC_file <- function(file){
+  # Load the Seurat object
+  seurat <- readRDS(paste0(basedir, file))
+
+# Extract meta.data from the Seurat object
+meta.data <- seurat@meta.data
+# Create the density plot
+ptotal <- ggplot(data = meta.data, aes(x = total)) +
+  geom_density(alpha = 0.2,  fill = "#BE3144", color = "#BE3144") +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 1000) +
+  ggtitle(file)
+
+pdetected <- ggplot(data = meta.data, aes(x = detected)) +
+  geom_density(alpha = 0.2,  fill =  "#355C7D", color = "#355C7D") +
+  theme_classic() +
+  scale_x_log10() +
+  ylab("density") +
+  geom_vline(xintercept = 1000) +
+  ggtitle(file)
+# Return the plots as a list
+list(ptotal, pdetected)
+}
+
+# Apply the function to each file in the list
+lapply(fileNamList, QC_file)
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```
