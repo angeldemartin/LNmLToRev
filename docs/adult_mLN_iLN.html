@@ -420,10 +420,10 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
 </div>
@@ -558,13 +558,15 @@ data/LNmLToRev_adultonly_seurat.integrated.rds
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong0ceb03f">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtree194015ab25968200dd45cdf2fd0e6cd4338a1033targetblank194015aa">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 0ceb03f
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/angeldemartin/LNmLToRev/tree/194015ab25968200dd45cdf2fd0e6cd4338a1033" target="_blank">194015a</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong0ceb03f"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtree194015ab25968200dd45cdf2fd0e6cd4338a1033targetblank194015aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -573,7 +575,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 0ceb03f.
+The results in this page were generated with repository version
+<a href="https://github.com/angeldemartin/LNmLToRev/tree/194015ab25968200dd45cdf2fd0e6cd4338a1033" target="_blank">194015a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -591,25 +594,16 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    data/.DS_Store
+    Ignored:    data/files/
 
 Untracked files:
-    Untracked:  analysis/EYFPpos.Rmd
-    Untracked:  analysis/QCindiv.Rmd
-    Untracked:  analysis/adult_mLN_iLN.Rmd
-    Untracked:  analysis/adult_mLN_iLN2.Rmd
-    Untracked:  analysis/mLN.Rmd
-    Untracked:  analysis/markerGenesRNA_snn_res.0.25
-    Untracked:  analysis/mergeQCumaps.Rmd
-    Untracked:  data/LNmLToRev_EYFPonly_seurat.rds
-    Untracked:  data/LNmLToRev_adultonly_seurat.integrated.rds
-    Untracked:  data/LNmLToRev_adultonly_seurat.rds
-    Untracked:  data/LNmLToRev_allmerged_seurat.rds
-    Untracked:  data/LNmLToRev_mLN_seurat.rds
-    Untracked:  data/files/
+    Untracked:  analysis/mLNEYFPpos.Rmd
 
 Unstaged changes:
-    Modified:   LNmLToRev.Rproj
+    Modified:   analysis/adult_mLN_iLN.Rmd
+    Modified:   analysis/adult_mLN_iLN2.Rmd
+    Modified:   analysis/index.Rmd
+    Deleted:    analysis/mLN.Rmd
 
 </code></pre>
 <p>
@@ -625,79 +619,102 @@ have uncommitted changes.
 </div>
 <div id="versions" class="tab-pane fade">
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/adult_mLN_iLN.Rmd</code>) and
+HTML (<code>docs/adult_mLN_iLN.html</code>) files. If you’ve configured
+a remote Git repository (see <code>?wflow_git_remote</code>), click on
+the hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/analysis/adult_mLN_iLN.Rmd" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+<td>
+init
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/angeldemartin/LNmLToRev/f74a803bf3880dc81ab922defef9a08560328333/docs/adult_mLN_iLN.html" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+<td>
+init
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="load-packages" class="section level2">
-<h2>load packages</h2>
+<div id="load-and-preprocess" class="section level2">
+<h2>load and preprocess</h2>
+<div id="load-packages" class="section level3">
+<h3>load packages</h3>
 </div>
-<div id="load-object" class="section level2">
-<h2>load object</h2>
-<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds&quot;
-seuratM &lt;- readRDS(fileNam)
-table(seuratM$dataset)
-table(seuratM$RNA_snn_res.0.25)
-table(seuratM$orig.ident)</code></pre>
+<div id="load-object" class="section level3">
+<h3>load object</h3>
 </div>
-<div id="subset-adult" class="section level2">
-<h2>subset adult</h2>
-<pre class="r"><code>seuratA &lt;- subset(seuratM, timepoint == &quot;8w&quot;)
-table(seuratM$timepoint)
-table(seuratA$timepoint)
-
-#rerun seurat
-seuratA &lt;- NormalizeData (object = seuratA)
-seuratA &lt;- FindVariableFeatures(object = seuratA)
-seuratA &lt;- ScaleData(object = seuratA, verbose = TRUE)
-seuratA &lt;- RunPCA(object=seuratA, npcs = 30, verbose = FALSE)
-seuratA &lt;- RunTSNE(object=seuratA, reduction=&quot;pca&quot;, dims = 1:20)
-seuratA &lt;- RunUMAP(object=seuratA, reduction=&quot;pca&quot;, dims = 1:20)
-seuratA &lt;- FindNeighbors(object = seuratA, reduction = &quot;pca&quot;, dims= 1:20)
-
-res &lt;- c(0.25, 0.6, 0.8, 0.4)
-for (i in 1:length(res)) {
-  seuratA &lt;- FindClusters(object = seuratA, resolution = res[i], random.seed = 1234)
-}</code></pre>
+<div id="subset-adult" class="section level3">
+<h3>subset adult</h3>
 </div>
-<div id="plot-umaps" class="section level2">
-<h2>plot umaps</h2>
-<div id="clustering" class="section level3">
-<h3>clustering</h3>
-<pre class="r"><code>DimPlot(seuratA, reduction = &quot;umap&quot;, group.by = &quot;RNA_snn_res.0.25&quot; ,
-        pt.size = 0.1, label = T, shuffle = T) +
-  theme_bw() +
-  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  xlab(&quot;umap1&quot;) +
-  ylab(&quot;umap2&quot;)</code></pre>
+<div id="plot-umaps" class="section level3">
+<h3>plot umaps</h3>
+<div id="clustering" class="section level4">
+<h4>clustering</h4>
 </div>
-<div id="location" class="section level3">
-<h3>location</h3>
-<pre class="r"><code>DimPlot(seuratA, reduction = &quot;umap&quot;, group.by = &quot;location&quot; ,
-        pt.size = 0.1, label = T, shuffle = T) +
-  theme_bw() +
-  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  xlab(&quot;umap1&quot;) +
-  ylab(&quot;umap2&quot;)</code></pre>
+<div id="location" class="section level4">
+<h4>location</h4>
 </div>
 </div>
 <div id="calculate-cluster-marker-genes-pre-filter"
-class="section level2">
-<h2>calculate cluster marker genes pre filter</h2>
-<pre class="r"><code>## calculate marker genes
-Idents(seuratA) &lt;- seuratA$RNA_snn_res.0.25
-levels(seuratA)
-
-markerGenes &lt;- FindAllMarkers(seuratA, only.pos=T) %&gt;% 
-  dplyr::filter(p_val_adj &lt; 0.01) </code></pre>
+class="section level3">
+<h3>calculate cluster marker genes pre filter</h3>
 </div>
-<div id="features-pre-filter" class="section level2">
-<h2>features pre filter</h2>
+<div id="features-pre-filter" class="section level3">
+<h3>features pre filter</h3>
 <pre class="r"><code>selGenesViolin &lt;- c(&quot;ENSMUSG00000020717.Pecam1&quot;, &quot;ENSMUSG00000026395.Ptprc&quot;, &quot;ENSMUSG00000031004.Mki67&quot;)
 
 pList &lt;- sapply(selGenesViolin, function(x){
@@ -709,8 +726,8 @@ pList &lt;- sapply(selGenesViolin, function(x){
   plot(p)
 })</code></pre>
 </div>
-<div id="filter-object" class="section level2">
-<h2>filter object</h2>
+<div id="filter-object" class="section level3">
+<h3>filter object</h3>
 <pre class="r"><code>## filter out Pecam1 (cluster #6) and Ptprc (cluster #9 and #10) Mki67 (#8) and pancreatic cells (#11)
 table(seuratA$RNA_snn_res.0.25)
 seuratF &lt;- subset(seuratA, RNA_snn_res.0.25 %in% c(&quot;6&quot;, &quot;8&quot; ,&quot;9&quot;, &quot;10&quot;, &quot;11&quot;), invert = TRUE)
@@ -719,8 +736,8 @@ table(seuratF$RNA_snn_res.0.25)
 seuratA &lt;- seuratF
 remove(seuratF)</code></pre>
 </div>
-<div id="rerun-seurat-after-filter" class="section level2">
-<h2>rerun seurat after filter</h2>
+<div id="rerun-seurat-after-filter" class="section level3">
+<h3>rerun seurat after filter</h3>
 <pre class="r"><code>seuratA &lt;- NormalizeData (object = seuratA)
 seuratA &lt;- FindVariableFeatures(object = seuratA)
 seuratA &lt;- ScaleData(object = seuratA, verbose = TRUE)
@@ -734,10 +751,11 @@ for (i in 1:length(res)) {
   seuratA &lt;- FindClusters(object = seuratA, resolution = res[i], random.seed = 1234)
 }</code></pre>
 </div>
-<div id="save-object" class="section level2">
-<h2>save object</h2>
+<div id="save-object" class="section level3">
+<h3>save object</h3>
 <pre class="r"><code>### save seurat object
 saveRDS(seuratA, file=&quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.rds&quot;)</code></pre>
+</div>
 </div>
 <div id="load-object-adult" class="section level2">
 <h2>load object adult</h2>
@@ -749,9 +767,8 @@ table(seuratA$dataset)</code></pre>
                                              5253                                              6419 
  382581_08-8_20250320_Mu_Cxcl13EYFP_Adult_pLN_FRC  382581_09-9_20250320_Mu_Cxcl13EYFP_Adult_mLN_FRC 
                                              7094                                              3522 </code></pre>
-</div>
-<div id="set-color-vectors" class="section level2">
-<h2>set color vectors</h2>
+<div id="set-color-vectors" class="section level3">
+<h3>set color vectors</h3>
 <pre class="r"><code>colLoc &lt;- c(&quot;#61baba&quot;, &quot;#ba6161&quot;)
 names(colLoc) &lt;- unique(seuratA$location)
 
@@ -767,6 +784,7 @@ names(coltimepoint) &lt;- c(&quot;E18&quot;, &quot;P7&quot;, &quot;3w&quot;, &qu
 collocation &lt;- c(&quot;#61baba&quot;, &quot;#ba6161&quot;)
 names(collocation) &lt;- c(&quot;iLN&quot;, &quot;mLN&quot;)</code></pre>
 </div>
+</div>
 <div id="plot-umaps-1" class="section level2">
 <h2>plot umaps</h2>
 <div id="clustering-1" class="section level3">
@@ -779,6 +797,43 @@ names(collocation) &lt;- c(&quot;iLN&quot;, &quot;mLN&quot;)</code></pre>
   xlab(&quot;umap1&quot;) +
   ylab(&quot;umap2&quot;)</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20clustering-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-clustering-1">
+Past versions of "umap clustering-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-clustering-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap clustering-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="location-1" class="section level3">
 <h3>location</h3>
@@ -790,10 +845,46 @@ names(collocation) &lt;- c(&quot;iLN&quot;, &quot;mLN&quot;)</code></pre>
   xlab(&quot;umap1&quot;) +
   ylab(&quot;umap2&quot;)</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20location-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-location-1">
+Past versions of "umap location-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-location-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap location-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<div id="features" class="section level2">
-<h2>features</h2>
+</div>
+<div id="features" class="section level3">
+<h3>features</h3>
 <pre class="r"><code>selGenesViolin &lt;- c(&quot;ENSMUSG00000022037.Clu&quot;, &quot;ENSMUSG00000094686.Ccl21a&quot;,
                     &quot;ENSMUSG00000074934.Grem1&quot;, &quot;ENSMUSG00000050069.Grem2&quot;,
                     &quot;ENSMUSG00000042436.Mfap4&quot;, &quot;ENSMUSG00000071005.Ccl19&quot;,
@@ -809,8 +900,466 @@ pList &lt;- sapply(selGenesViolin, function(x){
   theme(legend.position=&quot;right&quot;)
   plot(p)
 })</code></pre>
-<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-8.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-9.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-10.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-11.png" width="672" style="display: block; margin: auto;" /><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-12.png" width="672" style="display: block; margin: auto;" />
-## integrate data across location</p>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-1">
+Past versions of "featureplot sel genes-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-2">
+Past versions of "featureplot sel genes-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-2.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-3">
+Past versions of "featureplot sel genes-3.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-3.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-4">
+Past versions of "featureplot sel genes-4.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-4.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-5">
+Past versions of "featureplot sel genes-5.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-5.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-6">
+Past versions of "featureplot sel genes-6.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-6.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-7">
+Past versions of "featureplot sel genes-7.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-7.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-8">
+Past versions of "featureplot sel genes-8.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-8.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-9.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-9">
+Past versions of "featureplot sel genes-9.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-9.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-10">
+Past versions of "featureplot sel genes-10.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-10.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-11.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-11">
+Past versions of "featureplot sel genes-11.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-11" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-11.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/adult_mLN_iLN.Rmd/featureplot%20sel%20genes-12.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-featureplot-sel-genes-12">
+Past versions of "featureplot sel genes-12.png"
+</button>
+</p>
+<div id="fig-no-spaces-featureplot-sel-genes-12" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/featureplot sel genes-12.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="integrate-data-across-location" class="section level2">
+<h2>integrate data across location</h2>
 <pre class="r"><code>Idents(seuratA) &lt;- seuratA$location
 
 seurat.list &lt;- SplitObject(object = seuratA, split.by = &quot;location&quot;)
@@ -838,10 +1387,10 @@ for (i in 1:length(res)){
   seuratA.int &lt;- FindClusters(object = seuratA.int, resolution = res[i],
                               random.seed = 1234)
 }</code></pre>
-</div>
-<div id="save-int-object-adult" class="section level2">
-<h2>save int object adult</h2>
+<div id="save-int-object-adult" class="section level3">
+<h3>save int object adult</h3>
 <pre class="r"><code>saveRDS(seuratA.int, file=&quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds&quot;)</code></pre>
+</div>
 </div>
 <div id="load-int-object-adult" class="section level2">
 <h2>load int object adult</h2>
@@ -857,9 +1406,8 @@ colPal &lt;- c(&quot;#DAF7A6&quot;, &quot;#FFC300&quot;, &quot;#FF5733&quot;, &q
             &quot;#CD534CFF&quot;,&quot;#7AA6DCFF&quot;, &quot;#003C67FF&quot;, &quot;#8F7700FF&quot;, &quot;#3B3B3BFF&quot;,
             &quot;#A73030FF&quot;, &quot;#4A6990FF&quot;)[1:length(unique(seuratA.int$intCluster))]
 names(colPal) &lt;- unique(seuratA.int$intCluster)</code></pre>
-</div>
-<div id="assign-label" class="section level2">
-<h2>assign label</h2>
+<div id="assign-label" class="section level3">
+<h3>assign label</h3>
 <pre class="r"><code>seuratA.int$label &lt;- &quot;label&quot;
 seuratA.int$label[which(seuratA.int$intCluster == &quot;0&quot;)] &lt;- &quot;MedRC/IFRC&quot;
 seuratA.int$label[which(seuratA.int$intCluster == &quot;1&quot;)] &lt;- &quot;actMedRC&quot;
@@ -881,9 +1429,10 @@ colLab &lt;- c(&quot;#42a071&quot;, &quot;#900C3F&quot;,&quot;#b66e8d&quot;, &qu
 
 names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &quot;MedRC/IFRC&quot;, &quot;MedRC&quot; , &quot;actMedRC&quot;,
                    &quot;PRC&quot;, &quot;Pi16+RC&quot;, &quot;VSMC&quot;)</code></pre>
-<div id="dimplot-int-data" class="section level3">
-<h3>Dimplot int data</h3>
 </div>
+</div>
+<div id="dimplot-int-data" class="section level2">
+<h2>Dimplot int data</h2>
 <div id="clustering-2" class="section level3">
 <h3>clustering</h3>
 <pre class="r"><code>DimPlot(seuratA.int, reduction = &quot;umap&quot;,
@@ -893,8 +1442,47 @@ names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &q
         panel.grid.minor = element_blank()) +
   xlab(&quot;umap1&quot;) +
   ylab(&quot;umap2&quot;)</code></pre>
-<p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20clustering-1.png" width="672" style="display: block; margin: auto;" />
-### label</p>
+<p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20clustering-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-clustering-1">
+Past versions of "umap int clustering-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-clustering-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int clustering-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="label" class="section level3">
+<h3>label</h3>
 <pre class="r"><code>DimPlot(seuratA.int, reduction = &quot;umap&quot;, group.by = &quot;label&quot;, cols = colLab)+
   theme_bw() +
   theme(axis.text = element_blank(), axis.ticks = element_blank(), 
@@ -902,10 +1490,84 @@ names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &q
   xlab(&quot;UMAP1&quot;) +
   ylab(&quot;UMAP2&quot;)</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20label-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-label-1">
+Past versions of "umap int label-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-label-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int label-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>DimPlot(seuratA.int, reduction = &quot;umap&quot;, group.by = &quot;label&quot;, pt.size=0.5,
         cols = colLab, shuffle = T)+
   theme_void()</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20label-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-label-2">
+Past versions of "umap int label-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-label-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int label-2.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="label-split-by-location" class="section level3">
 <h3>label split by location</h3>
@@ -917,10 +1579,86 @@ names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &q
   xlab(&quot;UMAP1&quot;) +
   ylab(&quot;UMAP2&quot;)</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20label%20split%20by%20location-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-label-split-by-location-1">
+Past versions of "umap int label split by location-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-label-split-by-location-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int label split by location-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>DimPlot(seuratA.int, reduction = &quot;umap&quot;, group.by = &quot;label&quot;, pt.size=0.5,
         cols = colLab, split.by = &quot;location&quot;, shuffle = T)+
   theme_void()</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20label%20split%20by%20location-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-label-split-by-location-2">
+Past versions of "umap int label split by location-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-label-split-by-location-2"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int label split by location-2.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="location-2" class="section level3">
 <h3>location</h3>
@@ -932,14 +1670,90 @@ names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &q
   xlab(&quot;umap1&quot;) +
   ylab(&quot;umap2&quot;)</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20location-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-location-1">
+Past versions of "umap int location-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-location-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int location-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>DimPlot(seuratA.int, reduction = &quot;umap&quot;, group.by = &quot;location&quot;, pt.size=0.5,
         cols = colLoc, split.by = &quot;location&quot;, shuffle = T)+
   theme_void()</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/umap%20int%20location-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-umap-int-location-2">
+Past versions of "umap int location-2.png"
+</button>
+</p>
+<div id="fig-no-spaces-umap-int-location-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/umap int location-2.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<div id="heatmap-funcion" class="section level2">
-<h2>heatmap funcion</h2>
+</div>
+</div>
+<div id="cluster-characterization" class="section level2">
+<h2>cluster characterization</h2>
+<div id="heatmap-funcion" class="section level3">
+<h3>heatmap funcion</h3>
 <pre class="r"><code>avgHeatmap &lt;- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
                        ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
                        cr=FALSE, condCol=FALSE){
@@ -1005,8 +1819,8 @@ names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &q
          annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
 }</code></pre>
 </div>
-<div id="cluster-characterization" class="section level2">
-<h2>cluster characterization</h2>
+<div id="heatmap" class="section level3">
+<h3>heatmap</h3>
 <pre class="r"><code>seuratA.int &lt;- JoinLayers(seuratA.int)
 Idents(seuratA.int) &lt;- seuratA.int$intCluster
 
@@ -1029,11 +1843,50 @@ pOut &lt;- avgHeatmap(seurat = seuratA.int, selGenes = markerAll,
                   gapVecR=gapR$cumSum, gapVecC=NULL,cc=T,
                   cr=F, condCol=F)</code></pre>
 <p><img src="figure/adult_mLN_iLN.Rmd/characterize%20clusters%20heatmap-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-characterize-clusters-heatmap-1">
+Past versions of "characterize clusters heatmap-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-characterize-clusters-heatmap-1"
+class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/f74a803bf3880dc81ab922defef9a08560328333/docs/figure/adult_mLN_iLN.Rmd/characterize clusters heatmap-1.png" target="_blank">f74a803</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div id="session-info" class="section level2">
 <h2>session info</h2>
 <pre class="r"><code>date()</code></pre>
-<pre><code>[1] &quot;Wed May  7 10:01:27 2025&quot;</code></pre>
+<pre><code>[1] &quot;Wed May  7 13:47:07 2025&quot;</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.4.0 (2024-04-24)
 Platform: x86_64-apple-darwin20
@@ -1096,9 +1949,9 @@ loaded via a namespace (and not attached):
  [67] XVector_0.44.0            knitr_1.50                ggplot.multistats_1.0.1  
  [70] UCSC.utils_1.0.0          RhpcBLASctl_0.23-42       timechange_0.3.0         
  [73] foreach_1.5.2             patchwork_1.3.0           caTools_1.18.3           
- [76] data.table_1.17.0         ggtree_3.12.0             R.oo_1.27.0              
- [79] RSpectra_0.16-2           irlba_2.3.5.1             fastDummies_1.7.5        
- [82] gridGraphics_0.5-1        lazyeval_0.2.2            yaml_2.3.10              
+ [76] ggtree_3.12.0             data.table_1.17.0         R.oo_1.27.0              
+ [79] RSpectra_0.16-2           irlba_2.3.5.1             gridGraphics_0.5-1       
+ [82] fastDummies_1.7.5         lazyeval_0.2.2            yaml_2.3.10              
  [85] survival_3.8-3            scattermore_1.2           crayon_1.5.3             
  [88] RcppAnnoy_0.0.22          RColorBrewer_1.1-3        progressr_0.15.1         
  [91] tweenr_2.0.3              later_1.4.2               ggridges_0.5.6           
@@ -1126,36 +1979,36 @@ loaded via a namespace (and not attached):
 [157] memoise_2.0.1             rmarkdown_2.29            scales_1.4.0             
 [160] R.methodsS3_1.8.2         future_1.40.0             RANN_2.6.2               
 [163] Cairo_1.6-2               spatstat.data_3.1-6       rstudioapi_0.17.1        
-[166] cluster_2.1.8.1           mutoss_0.1-13             spatstat.utils_3.1-3     
-[169] hms_1.1.3                 fitdistrplus_1.2-2        cowplot_1.1.3            
-[172] colorspace_2.1-1          rlang_1.1.6               DelayedMatrixStats_1.26.0
-[175] sparseMatrixStats_1.16.0  xts_0.14.1                dotCall64_1.2            
-[178] shinydashboard_0.7.3      ggforce_0.4.2             laeken_0.5.3             
-[181] mgcv_1.9-3                xfun_0.52                 e1071_1.7-16             
-[184] TH.data_1.1-3             iterators_1.0.14          abind_1.4-8              
-[187] GOSemSim_2.30.2           treeio_1.28.0             futile.options_1.0.1     
-[190] bitops_1.0-9              Rdpack_2.6.4              promises_1.3.2           
-[193] scatterpie_0.2.4          RSQLite_2.3.9             qvalue_2.36.0            
-[196] sandwich_3.1-1            fgsea_1.30.0              DelayedArray_0.30.1      
-[199] proxy_0.4-27              GO.db_3.19.1              compiler_4.4.0           
-[202] prettyunits_1.2.0         boot_1.3-31               beachmat_2.20.0          
-[205] listenv_0.9.1             Rcpp_1.0.14               edgeR_4.2.2              
-[208] workflowr_1.7.1           BiocSingular_1.20.0       tensor_1.5               
-[211] MASS_7.3-65               progress_1.2.3            BiocParallel_1.38.0      
-[214] babelgene_22.9            spatstat.random_3.3-3     R6_2.6.1                 
-[217] fastmap_1.2.0             multcomp_1.4-28           fastmatch_1.1-6          
-[220] rstatix_0.7.2             vipor_0.4.7               TTR_0.24.4               
-[223] ROCR_1.0-11               TFisher_0.2.0             rsvd_1.0.5               
-[226] vcd_1.4-13                nnet_7.3-20               gtable_0.3.6             
-[229] KernSmooth_2.23-26        miniUI_0.1.2              deldir_2.0-4             
-[232] htmltools_0.5.8.1         ggthemes_5.1.0            bit64_4.6.0-1            
-[235] spatstat.explore_3.4-2    lifecycle_1.0.4           blme_1.0-6               
-[238] msigdbdf_24.1.1           nloptr_2.2.1              sass_0.4.10              
-[241] vctrs_0.6.5               robustbase_0.99-4-1       spatstat.geom_3.3-6      
-[244] sn_2.1.1                  ggfun_0.1.8               future.apply_1.11.3      
-[247] bslib_0.9.0               pillar_1.10.2             gplots_3.2.0             
-[250] pcaMethods_1.96.0         locfit_1.5-9.12           jsonlite_2.0.0           
-[253] GetoptLong_1.0.5         </code></pre>
+[166] cluster_2.1.8.1           whisker_0.4.1             mutoss_0.1-13            
+[169] spatstat.utils_3.1-3      hms_1.1.3                 fitdistrplus_1.2-2       
+[172] cowplot_1.1.3             colorspace_2.1-1          rlang_1.1.6              
+[175] DelayedMatrixStats_1.26.0 sparseMatrixStats_1.16.0  xts_0.14.1               
+[178] dotCall64_1.2             shinydashboard_0.7.3      ggforce_0.4.2            
+[181] laeken_0.5.3              mgcv_1.9-3                xfun_0.52                
+[184] e1071_1.7-16              TH.data_1.1-3             iterators_1.0.14         
+[187] abind_1.4-8               GOSemSim_2.30.2           treeio_1.28.0            
+[190] futile.options_1.0.1      bitops_1.0-9              Rdpack_2.6.4             
+[193] promises_1.3.2            scatterpie_0.2.4          RSQLite_2.3.9            
+[196] qvalue_2.36.0             sandwich_3.1-1            fgsea_1.30.0             
+[199] DelayedArray_0.30.1       proxy_0.4-27              GO.db_3.19.1             
+[202] compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31              
+[205] beachmat_2.20.0           listenv_0.9.1             Rcpp_1.0.14              
+[208] edgeR_4.2.2               workflowr_1.7.1           BiocSingular_1.20.0      
+[211] tensor_1.5                MASS_7.3-65               progress_1.2.3           
+[214] BiocParallel_1.38.0       babelgene_22.9            spatstat.random_3.3-3    
+[217] R6_2.6.1                  fastmap_1.2.0             multcomp_1.4-28          
+[220] fastmatch_1.1-6           rstatix_0.7.2             vipor_0.4.7              
+[223] TTR_0.24.4                ROCR_1.0-11               TFisher_0.2.0            
+[226] rsvd_1.0.5                vcd_1.4-13                nnet_7.3-20              
+[229] gtable_0.3.6              KernSmooth_2.23-26        miniUI_0.1.2             
+[232] deldir_2.0-4              htmltools_0.5.8.1         ggthemes_5.1.0           
+[235] bit64_4.6.0-1             spatstat.explore_3.4-2    lifecycle_1.0.4          
+[238] blme_1.0-6                msigdbdf_24.1.1           nloptr_2.2.1             
+[241] sass_0.4.10               vctrs_0.6.5               robustbase_0.99-4-1      
+[244] spatstat.geom_3.3-6       sn_2.1.1                  ggfun_0.1.8              
+[247] future.apply_1.11.3       bslib_0.9.0               pillar_1.10.2            
+[250] gplots_3.2.0              pcaMethods_1.96.0         locfit_1.5-9.12          
+[253] jsonlite_2.0.0            GetoptLong_1.0.5         </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1226,9 +2079,9 @@ loaded via a namespace (and not attached):
  [67] XVector_0.44.0            knitr_1.50                ggplot.multistats_1.0.1  
  [70] UCSC.utils_1.0.0          RhpcBLASctl_0.23-42       timechange_0.3.0         
  [73] foreach_1.5.2             patchwork_1.3.0           caTools_1.18.3           
- [76] data.table_1.17.0         ggtree_3.12.0             R.oo_1.27.0              
- [79] RSpectra_0.16-2           irlba_2.3.5.1             fastDummies_1.7.5        
- [82] gridGraphics_0.5-1        lazyeval_0.2.2            yaml_2.3.10              
+ [76] ggtree_3.12.0             data.table_1.17.0         R.oo_1.27.0              
+ [79] RSpectra_0.16-2           irlba_2.3.5.1             gridGraphics_0.5-1       
+ [82] fastDummies_1.7.5         lazyeval_0.2.2            yaml_2.3.10              
  [85] survival_3.8-3            scattermore_1.2           crayon_1.5.3             
  [88] RcppAnnoy_0.0.22          RColorBrewer_1.1-3        progressr_0.15.1         
  [91] tweenr_2.0.3              later_1.4.2               ggridges_0.5.6           
@@ -1256,36 +2109,36 @@ loaded via a namespace (and not attached):
 [157] memoise_2.0.1             rmarkdown_2.29            scales_1.4.0             
 [160] R.methodsS3_1.8.2         future_1.40.0             RANN_2.6.2               
 [163] Cairo_1.6-2               spatstat.data_3.1-6       rstudioapi_0.17.1        
-[166] cluster_2.1.8.1           mutoss_0.1-13             spatstat.utils_3.1-3     
-[169] hms_1.1.3                 fitdistrplus_1.2-2        cowplot_1.1.3            
-[172] colorspace_2.1-1          rlang_1.1.6               DelayedMatrixStats_1.26.0
-[175] sparseMatrixStats_1.16.0  xts_0.14.1                dotCall64_1.2            
-[178] shinydashboard_0.7.3      ggforce_0.4.2             laeken_0.5.3             
-[181] mgcv_1.9-3                xfun_0.52                 e1071_1.7-16             
-[184] TH.data_1.1-3             iterators_1.0.14          abind_1.4-8              
-[187] GOSemSim_2.30.2           treeio_1.28.0             futile.options_1.0.1     
-[190] bitops_1.0-9              Rdpack_2.6.4              promises_1.3.2           
-[193] scatterpie_0.2.4          RSQLite_2.3.9             qvalue_2.36.0            
-[196] sandwich_3.1-1            fgsea_1.30.0              DelayedArray_0.30.1      
-[199] proxy_0.4-27              GO.db_3.19.1              compiler_4.4.0           
-[202] prettyunits_1.2.0         boot_1.3-31               beachmat_2.20.0          
-[205] listenv_0.9.1             Rcpp_1.0.14               edgeR_4.2.2              
-[208] workflowr_1.7.1           BiocSingular_1.20.0       tensor_1.5               
-[211] MASS_7.3-65               progress_1.2.3            BiocParallel_1.38.0      
-[214] babelgene_22.9            spatstat.random_3.3-3     R6_2.6.1                 
-[217] fastmap_1.2.0             multcomp_1.4-28           fastmatch_1.1-6          
-[220] rstatix_0.7.2             vipor_0.4.7               TTR_0.24.4               
-[223] ROCR_1.0-11               TFisher_0.2.0             rsvd_1.0.5               
-[226] vcd_1.4-13                nnet_7.3-20               gtable_0.3.6             
-[229] KernSmooth_2.23-26        miniUI_0.1.2              deldir_2.0-4             
-[232] htmltools_0.5.8.1         ggthemes_5.1.0            bit64_4.6.0-1            
-[235] spatstat.explore_3.4-2    lifecycle_1.0.4           blme_1.0-6               
-[238] msigdbdf_24.1.1           nloptr_2.2.1              sass_0.4.10              
-[241] vctrs_0.6.5               robustbase_0.99-4-1       spatstat.geom_3.3-6      
-[244] sn_2.1.1                  ggfun_0.1.8               future.apply_1.11.3      
-[247] bslib_0.9.0               pillar_1.10.2             gplots_3.2.0             
-[250] pcaMethods_1.96.0         locfit_1.5-9.12           jsonlite_2.0.0           
-[253] GetoptLong_1.0.5         </code></pre>
+[166] cluster_2.1.8.1           whisker_0.4.1             mutoss_0.1-13            
+[169] spatstat.utils_3.1-3      hms_1.1.3                 fitdistrplus_1.2-2       
+[172] cowplot_1.1.3             colorspace_2.1-1          rlang_1.1.6              
+[175] DelayedMatrixStats_1.26.0 sparseMatrixStats_1.16.0  xts_0.14.1               
+[178] dotCall64_1.2             shinydashboard_0.7.3      ggforce_0.4.2            
+[181] laeken_0.5.3              mgcv_1.9-3                xfun_0.52                
+[184] e1071_1.7-16              TH.data_1.1-3             iterators_1.0.14         
+[187] abind_1.4-8               GOSemSim_2.30.2           treeio_1.28.0            
+[190] futile.options_1.0.1      bitops_1.0-9              Rdpack_2.6.4             
+[193] promises_1.3.2            scatterpie_0.2.4          RSQLite_2.3.9            
+[196] qvalue_2.36.0             sandwich_3.1-1            fgsea_1.30.0             
+[199] DelayedArray_0.30.1       proxy_0.4-27              GO.db_3.19.1             
+[202] compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31              
+[205] beachmat_2.20.0           listenv_0.9.1             Rcpp_1.0.14              
+[208] edgeR_4.2.2               workflowr_1.7.1           BiocSingular_1.20.0      
+[211] tensor_1.5                MASS_7.3-65               progress_1.2.3           
+[214] BiocParallel_1.38.0       babelgene_22.9            spatstat.random_3.3-3    
+[217] R6_2.6.1                  fastmap_1.2.0             multcomp_1.4-28          
+[220] fastmatch_1.1-6           rstatix_0.7.2             vipor_0.4.7              
+[223] TTR_0.24.4                ROCR_1.0-11               TFisher_0.2.0            
+[226] rsvd_1.0.5                vcd_1.4-13                nnet_7.3-20              
+[229] gtable_0.3.6              KernSmooth_2.23-26        miniUI_0.1.2             
+[232] deldir_2.0-4              htmltools_0.5.8.1         ggthemes_5.1.0           
+[235] bit64_4.6.0-1             spatstat.explore_3.4-2    lifecycle_1.0.4          
+[238] blme_1.0-6                msigdbdf_24.1.1           nloptr_2.2.1             
+[241] sass_0.4.10               vctrs_0.6.5               robustbase_0.99-4-1      
+[244] spatstat.geom_3.3-6       sn_2.1.1                  ggfun_0.1.8              
+[247] future.apply_1.11.3       bslib_0.9.0               pillar_1.10.2            
+[250] gplots_3.2.0              pcaMethods_1.96.0         locfit_1.5-9.12          
+[253] jsonlite_2.0.0            GetoptLong_1.0.5         </code></pre>
 </div>
 </div>
 </div>

@@ -16,7 +16,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
 seed <- 1234
 ```
 
-## load packages
+## load 
+### load packages
 ```{r load packages, warning=FALSE, include=FALSE}
 library(ExploreSCdataSeurat3)
 library(runSeurat3)
@@ -45,13 +46,199 @@ library(VennDiagram)
 library(NCmisc)
 ```
 
-## load int object adult
+### load int object adult
 ```{r load int object adultonly}
 fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds"
 seuratA.int <- readRDS(fileNam)
 ```
 
-```{r dotplot, fig.height=8, fig.width=6}
+### set color vectors 
+```{r set color vector}
+colLab <- c("#42a071", "#900C3F","#b66e8d", "#61a4ba", "#424671", "#003C67FF",
+            "#e3953d", "#714542", "#b6856e")
+
+names(colLab) <- c("FDC/MRC", "TRC", "TBRC", "MedRC/IFRC", "MedRC" , "actMedRC",
+                   "PRC", "Pi16+RC", "VSMC")
+
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+
+colLoc <- c("#61baba", "#ba6161")
+names(colLoc) <- unique(seuratA.int$location)
+```
+
+## umap label
+```{r umap int label}
+DimPlot(seuratA.int, reduction = "umap", group.by = "label", cols = colLab)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+## counts
+```{r counts-1}
+knitr::kable(table(seuratA.int$label, seuratA.int$location))
+```
+
+```{r counts-2}
+knitr::kable(table(seuratA.int$location))
+```
+```{r counts-3}
+seuratSub <- subset(seuratA.int, Rosa26eyfp.Rosa26eyfp>0)
+eyfpPos <- colnames(seuratSub)
+
+seuratA.int$EYFP <-"neg"
+seuratA.int$EYFP[which(colnames(seuratA.int)%in%eyfpPos)] <- "pos"
+table(seuratA.int$dataset, seuratA.int$EYFP)
+
+
+knitr::kable(table( seuratA.int$label, seuratA.int$EYFP))
+```
+
+```{r relative abundance per location, fig.height=8, fig.width=6}
+## relative abundance per location
+clustCond <- data.frame(table(seuratA.int$location, seuratA.int$label))
+colnames(clustCond) <- c("location", "intCluster", "cnt")
+condTot <- data.frame(table(seuratA.int$location))
+colnames(condTot) <- c("location", "tot")
+colPaldat <- data.frame(col=colLab) %>%
+  rownames_to_column(var = "intCluster")
+clustDat2 <- clustCond %>%  left_join(., condTot, by = "location") %>% 
+  mutate(relAb = cnt/tot * 100) %>%
+  left_join(., colPaldat, by = "intCluster")
+
+knitr::kable(clustDat2)
+```
+
+```{r plot relative abundance per location}
+lapply(names(colLoc), function(co){
+  clustDat2sel <- clustDat2 %>% filter(location==co)
+  pie(clustDat2sel$relAb,
+      labels = clustDat2sel$intCluster,
+      col = clustDat2sel$col,
+      main = paste0(co))
+})
+```
+## fraction EYFP+
+### across all
+```{r barplot fraction EYFPpos across all}
+## across all
+eyfpCnt <- data.frame(table(seuratA.int$label, seuratA.int$EYFP)) %>%
+  spread(.,Var2 , Freq) %>% mutate(tot=pos+neg) %>% 
+  mutate(freqPos=pos*100/tot) %>% mutate(freqNeg=neg*100/tot) 
+
+eyfpCntDat <- eyfpCnt %>% dplyr::select(Var1, freqPos, freqNeg) %>% 
+  gather(., eyfp, freq, freqPos:freqNeg)
+
+p <- ggpubr::ggbarplot(eyfpCntDat, x="Var1", y="freq", fill="eyfp",
+                  palette = c("#9d9f9e","#09983f"),
+                  order = rev(names(colLab)),
+                  xlab = "", ylab = "Frequency",
+                  orientation = "horizontal") +
+  theme(legend.position = "right")
+p
+```
+### individual LNs
+```{r barplot fraction EYFPpos individual LNs}
+LNvec <- unique(seuratA.int$location)
+
+lapply(LNvec, function(ln){
+  seuratSub <- subset(seuratA.int, location== ln)
+  eyfpCnt <- data.frame(table(seuratSub$label, seuratSub$EYFP)) %>%
+  spread(.,Var2 , Freq) %>% mutate(tot=pos+neg) %>% 
+  mutate(freqPos=pos*100/tot) %>% mutate(freqNeg=neg*100/tot) 
+
+  eyfpCntDat <- eyfpCnt %>% dplyr::select(Var1, freqPos, freqNeg) %>% 
+    gather(., eyfp, freq, freqPos:freqNeg)
+
+  p <- ggpubr::ggbarplot(eyfpCntDat, x="Var1", y="freq", fill="eyfp",
+                  palette = c("#9d9f9e","#09983f"),
+                  order = rev(names(colLab)),
+                  xlab = "", ylab = "Frequency",
+                  orientation = "horizontal") +
+    theme(legend.position = "right") +
+    ggtitle(paste0("Fraction EYFP+ cells - ", ln))
+  p
+
+})
+```
+
+### heatmap funcion
+```{r heatmap funcion}
+avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
+                       ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
+                       cr=FALSE, condCol=FALSE){
+  
+  selGenes <- selGenes$gene
+  
+  ## assay data
+  clusterAssigned <- as.data.frame(Idents(seurat)) %>%
+  dplyr::mutate(cell=rownames(.))
+  colnames(clusterAssigned)[1] <- "ident"
+  seuratDat <- GetAssayData(seurat)
+  
+  ## genes of interest
+  genes <- data.frame(gene=rownames(seurat)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) %>% filter(geneID %in% selGenes)
+
+  ## matrix with averaged cnts per ident
+  logNormExpres <- as.data.frame(t(as.matrix(
+    seuratDat[which(rownames(seuratDat) %in% genes$gene),])))
+  logNormExpres <- logNormExpres %>% dplyr::mutate(cell=rownames(.)) %>%
+    dplyr::left_join(.,clusterAssigned, by=c("cell")) %>%
+    dplyr::select(-cell) %>% dplyr::group_by(ident) %>%
+    dplyr::summarise_all(mean)
+  logNormExpresMa <- logNormExpres %>% dplyr::select(-ident) %>% as.matrix()
+  rownames(logNormExpresMa) <- logNormExpres$ident
+  logNormExpresMa <- t(logNormExpresMa)
+  rownames(logNormExpresMa) <- gsub("^.*?\\.","",rownames(logNormExpresMa))
+  
+  ## remove genes if they are all the same in all groups
+  ind <- apply(logNormExpresMa, 1, sd) == 0
+  logNormExpresMa <- logNormExpresMa[!ind,]
+  genes <- genes[!ind,]
+
+  ## color columns according to cluster
+  annotation_col <- as.data.frame(gsub("(^.*?_)","",
+                                       colnames(logNormExpresMa)))%>%
+    dplyr::mutate(celltype=gsub("(_.*$)","",colnames(logNormExpresMa)))
+  colnames(annotation_col)[1] <- "col1"
+  annotation_col <- annotation_col %>%
+    dplyr::mutate(cond = gsub(".*_","",col1)) %>%
+    dplyr::select(cond, celltype)
+  rownames(annotation_col) <- colnames(logNormExpresMa) 
+
+  ann_colors = list(
+      cond = colVecCond,
+      celltype=colVecIdent)
+  if(is.null(ann_colors$cond)){
+    annotation_col$cond <- NULL
+  }
+  
+  ## adjust order
+  logNormExpresMa <- logNormExpresMa[selGenes,]
+  if(is.null(ordVec)){
+    ordVec <- levels(seurat)
+  }
+  logNormExpresMa <- logNormExpresMa[,ordVec]
+
+  ## scaled row-wise
+  pheatmap(logNormExpresMa, scale="row" ,treeheight_row = 0, cluster_rows = cr, 
+         cluster_cols = cc,
+         color = colorRampPalette(c("#2166AC", "#F7F7F7", "#B2182B"))(50),
+         annotation_col = annotation_col, cellwidth=15, cellheight=10,
+         annotation_colors = ann_colors, gaps_row = gapVecR, gaps_col = gapVecC)
+}
+```
+
+## vis FRC marker
+### avg heatmap
+```{r heatmap FRC marker, fig.height=8, fig.width=6}
 seurat_markers <- data.frame(gene=c("Fcgr2b","Fcer2a","Cr2","Cxcl13",
                                     "Slc7a11", "Ccl19", 
                                     "Ccl21a", "Fmod", "Grem1", "Bmp4",
@@ -69,6 +256,17 @@ genes <- data.frame(geneID=rownames(seuratA.int)) %>%
 
 markerAll <- seurat_markers %>% left_join(., genes, by="gene")
 
+ordVec <- names(colLab)
+Idents(seuratA.int) <- seuratA.int$label
+pOut <- avgHeatmap(seurat = seuratA.int, selGenes = markerAll,
+                  colVecIdent = colLab, 
+                  ordVec=ordVec,
+                  gapVecR=NULL, gapVecC=NULL,cc=F,
+                  cr=F, condCol=F)
+```
+
+### dotplot
+```{r dotplot FRC marker, fig.height=8, fig.width=6}
 ## Dotplot all
 seuratA.int$label <- factor(seuratA.int$label, levels = names(colLab))
 Idents(seuratA.int) <- seuratA.int$label

@@ -16,7 +16,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
 seed <- 1234
 ```
 
-## load packages
+## load and preprocess
+### load packages
 ```{r load packages, warning=FALSE, include=FALSE}
 library(ExploreSCdataSeurat3)
 library(runSeurat3)
@@ -45,8 +46,8 @@ library(VennDiagram)
 library(NCmisc)
 ```
 
-## load object
-```{r load merged object all, eval=FALSE}
+### load object
+```{r load merged object all, eval=FALSE, include=FALSE}
 fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds"
 seuratM <- readRDS(fileNam)
 table(seuratM$dataset)
@@ -54,8 +55,8 @@ table(seuratM$RNA_snn_res.0.25)
 table(seuratM$orig.ident)
 ```
 
-## subset adult
-```{r subset adult datasets, eval=FALSE}
+### subset adult
+```{r subset adult datasets, eval=FALSE, include=FALSE}
 seuratA <- subset(seuratM, timepoint == "8w")
 table(seuratM$timepoint)
 table(seuratA$timepoint)
@@ -75,9 +76,9 @@ for (i in 1:length(res)) {
 }
 ```
 
-## plot umaps
-### clustering
-```{r umap clustering pre filter, eval=FALSE}
+### plot umaps
+#### clustering
+```{r umap clustering pre filter, eval=FALSE, include=FALSE}
 DimPlot(seuratA, reduction = "umap", group.by = "RNA_snn_res.0.25" ,
         pt.size = 0.1, label = T, shuffle = T) +
   theme_bw() +
@@ -87,8 +88,8 @@ DimPlot(seuratA, reduction = "umap", group.by = "RNA_snn_res.0.25" ,
   ylab("umap2")
 ```
 
-### location
-```{r umap location pre filter, eval=FALSE}
+#### location
+```{r umap location pre filter, eval=FALSE, include=FALSE}
 DimPlot(seuratA, reduction = "umap", group.by = "location" ,
         pt.size = 0.1, label = T, shuffle = T) +
   theme_bw() +
@@ -98,8 +99,8 @@ DimPlot(seuratA, reduction = "umap", group.by = "location" ,
   ylab("umap2")
 ```
 
-## calculate cluster marker genes pre filter
-```{r cluster marker genes pre filter, eval=FALSE}
+### calculate cluster marker genes pre filter
+```{r cluster marker genes pre filter, eval=FALSE, include=FALSE}
 ## calculate marker genes
 Idents(seuratA) <- seuratA$RNA_snn_res.0.25
 levels(seuratA)
@@ -108,7 +109,7 @@ markerGenes <- FindAllMarkers(seuratA, only.pos=T) %>%
   dplyr::filter(p_val_adj < 0.01) 
 ```
 
-## features pre filter
+### features pre filter
 ```{r featureplot sel genes pre filter, eval=FALSE}
 selGenesViolin <- c("ENSMUSG00000020717.Pecam1", "ENSMUSG00000026395.Ptprc", "ENSMUSG00000031004.Mki67")
 
@@ -123,7 +124,7 @@ pList <- sapply(selGenesViolin, function(x){
 ```
 
 
-## filter object
+### filter object
 ```{r filter object, eval=FALSE}
 ## filter out Pecam1 (cluster #6) and Ptprc (cluster #9 and #10) Mki67 (#8) and pancreatic cells (#11)
 table(seuratA$RNA_snn_res.0.25)
@@ -134,7 +135,7 @@ seuratA <- seuratF
 remove(seuratF)
 ```
 
-## rerun seurat after filter
+### rerun seurat after filter
 ```{r rerun seurat after filter, eval=FALSE}
 seuratA <- NormalizeData (object = seuratA)
 seuratA <- FindVariableFeatures(object = seuratA)
@@ -150,7 +151,7 @@ for (i in 1:length(res)) {
 }
 ```
 
-## save object
+### save object
 ```{r save merged seurat object adultonly, eval=FALSE}
 ### save seurat object
 saveRDS(seuratA, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.rds")
@@ -163,7 +164,7 @@ seuratA <- readRDS(fileNam)
 table(seuratA$dataset)
 ```
 
-## set color vectors 
+### set color vectors 
 ```{r set color vector}
 colLoc <- c("#61baba", "#ba6161")
 names(colLoc) <- unique(seuratA$location)
@@ -204,7 +205,7 @@ DimPlot(seuratA, reduction = "umap", group.by = "location" ,
   ylab("umap2")
 ```
 
-## features
+### features
 ```{r featureplot sel genes}
 selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
                     "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
@@ -222,6 +223,7 @@ pList <- sapply(selGenesViolin, function(x){
   plot(p)
 })
 ```
+
 ## integrate data across location
 ```{r integrate, eval=FALSE, include=TRUE}
 Idents(seuratA) <- seuratA$location
@@ -253,7 +255,7 @@ for (i in 1:length(res)){
 }
 ```
 
-## save int object adult
+### save int object adult
 ```{r save int object adultonly, eval=FALSE, include=TRUE}
 saveRDS(seuratA.int, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds")
 ```
@@ -263,7 +265,6 @@ saveRDS(seuratA.int, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data
 fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds"
 seuratA.int <- readRDS(fileNam)
 ```
-
 
 ```{r set default assay int object}
 DefaultAssay(object = seuratA.int) <- "RNA"
@@ -278,7 +279,7 @@ colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
 names(colPal) <- unique(seuratA.int$intCluster)
 ```
 
-## assign label
+### assign label
 ```{r assign label int clusters}
 seuratA.int$label <- "label"
 seuratA.int$label[which(seuratA.int$intCluster == "0")] <- "MedRC/IFRC"
@@ -301,7 +302,7 @@ names(colLab) <- c("FDC/MRC", "TRC", "TBRC", "MedRC/IFRC", "MedRC" , "actMedRC",
                    "PRC", "Pi16+RC", "VSMC")
 ```
 
-### Dimplot int data
+## Dimplot int data
 ### clustering
 ```{r umap int clustering}
 DimPlot(seuratA.int, reduction = "umap",
@@ -341,7 +342,6 @@ DimPlot(seuratA.int, reduction = "umap", group.by = "label", pt.size=0.5,
   theme_void()
 ```
 
-
 ### location
 ```{r umap int location}
 DimPlot(seuratA.int, reduction = "umap", group.by = "location", cols = colLoc,
@@ -357,7 +357,8 @@ DimPlot(seuratA.int, reduction = "umap", group.by = "location", pt.size=0.5,
   theme_void()
 ```
 
-## heatmap funcion
+## cluster characterization
+### heatmap funcion
 ```{r heatmap funcion}
 avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
                        ordVec=NULL, gapVecR=NULL, gapVecC=NULL,cc=FALSE,
@@ -426,7 +427,7 @@ avgHeatmap <- function(seurat, selGenes, colVecIdent, colVecCond=NULL,
 ```
 
 
-## cluster characterization
+### heatmap
 ```{r characterize clusters heatmap, fig.height=15, fig.width=5}
 seuratA.int <- JoinLayers(seuratA.int)
 Idents(seuratA.int) <- seuratA.int$intCluster

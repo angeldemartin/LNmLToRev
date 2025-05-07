@@ -9,5 +9,9 @@ editor_options:
 ---
 
 ### Integrate data adult mLN and iLN. 
-Integrate data adult mLN and iLN
+Integrate
 [link](adult_mLN_iLN.html)
+
+### Characterize adult mLN and iLN. 
+Characterize
+[link](adult_mLN_iLN2.html)
