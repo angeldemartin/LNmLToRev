@@ -268,6 +268,52 @@ DimPlot(seuratmLNf3, reduction = "umap", group.by = "timepoint",
   ylab("UMAP2")
 ```
 
+### label transfer
+```{r transfer label}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds"
+seuratLab <- readRDS(fileNam)
+
+seuratLab <- subset(seuratLab, location=="mLN")
+seuratLab <- subset(seuratLab, EYFP=="pos")
+table(seuratLab$label)
+```
+
+######go on here
+
+```{r transfer label-2}
+labCells <- data.frame(label=seuratLab$label) %>% rownames_to_column(., "cell")
+allCell <- data.frame(cell=colnames(seuratmLNf3)) %>% 
+  left_join(., labCells, by= "cell")
+allCell$label[which(is.na(allCell$label))] <- "unassigned"
+seuratmLNf3$label <- allCell$label
+
+table(seuratmLNf3$timepoint)
+table(seuratmLNf3$label)
+
+colLab <- c("#42a071", "#900C3F","#b66e8d", "#61a4ba", "#424671", "#003C67FF",
+            "#e3953d", "#714542", "#b6856e", "#a4a4a4")
+
+names(colLab) <- c("FDC/MRC", "TRC", "TBRC", "MedRC/IFRC", "MedRC" , "actMedRC",
+                   "PRC", "Pi16+RC", "VSMC", "unassigned")
+
+DimPlot(seuratmLNf3, reduction = "umap", group.by = "label",
+        cols = colLab, shuffle=T)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+```{r transfer label-3}
+DimPlot(seuratmLNf3, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, order = TRUE)+
+  theme_void()
+
+DimPlot(seuratmLNf3, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = FALSE)+
+  theme_void()
+```
+
 ### calculate cluster marker genes mLNf3
 ```{r marker RNA_snn_res.0.4 mLNf3, include=TRUE, eval=FALSE}
 ##cluster marker
