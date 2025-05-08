@@ -1,0 +1,623 @@
+---
+title: "mLNEYFPpos"
+author: "A.DeMartin"
+date: "2025-04-29"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+library(slingshot)
+```
+
+## load object EYFPonly and preprocess
+```{r load merged object EYFPonly, eval=FALSE, include=TRUE}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFPonly_seurat.rds"
+seuratEYFP <- readRDS(fileNam)
+table(seuratEYFP$dataset)
+table(seuratEYFP$RNA_snn_res.0.25)
+table(seuratEYFP$orig.ident)
+```
+
+### subset mLN and rerun
+```{r subset mLN, eval=FALSE, include=TRUE}
+
+table(seuratEYFP$location)
+seuratmLN <- subset(seuratEYFP, location == "mLN")
+table(seuratmLN$orig.ident)
+
+#rerun seurat
+seuratmLN <- NormalizeData (object = seuratmLN)
+seuratmLN <- FindVariableFeatures(object = seuratmLN)
+seuratmLN <- ScaleData(object = seuratmLN, verbose = TRUE)
+seuratmLN <- RunPCA(object=seuratmLN, npcs = 30, verbose = FALSE)
+seuratmLN <- RunTSNE(object=seuratmLN, reduction="pca", dims = 1:20)
+seuratmLN <- RunUMAP(object=seuratmLN, reduction="pca", dims = 1:20)
+seuratmLN <- FindNeighbors(object = seuratmLN, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratmLN <- FindClusters(object = seuratmLN, resolution = res[i], random.seed = 1234)
+}
+```
+
+### save object
+```{r save object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratmLN, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLN_seurat.rds")
+```
+
+## load object mLNEYFP
+```{r load object mLN}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLN_seurat.rds"
+seuratmLN <- readRDS(fileNam)
+table(seuratmLN$dataset)
+table(seuratmLN$RNA_snn_res.0.25)
+table(seuratmLN$orig.ident)
+```
+
+##set color vectors 
+```{r set color vector}
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f",  "#25328a",
+            "#b6856e", "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 
+            "#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF",
+            "#4A6990FF")[1:length(unique(seuratmLN$RNA_snn_res.0.4))]
+names(colPal) <- unique(seuratmLN$RNA_snn_res.0.4)
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+```
+
+
+## dimplot
+### clustering
+```{r dimplot clustering}
+DimPlot(seuratmLN, reduction = "umap", group.by = "RNA_snn_res.0.4",
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+### timepoint
+```{r dimplot age}
+DimPlot(seuratmLN, reduction = "umap", group.by = "timepoint",
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+## calculate cluster marker genes
+```{r marker RNA_snn_res.0.4, include=TRUE, eval=FALSE}
+##cluster marker
+Idents(seuratmLN) <- seuratmLN$RNA_snn_res.0.4
+markerGenes <- FindAllMarkers(seuratmLN, only.pos=T) %>% 
+  dplyr::filter(p_val_adj < 0.01)
+
+#save table
+write.table(markerGenes, 
+            file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data//markerGenes_mLNEYFP_RNA_snn_res.0.4",
+            sep="\t",
+            quote=F,
+            row.names=F,
+            col.names=T)
+```
+
+## plot features
+```{r featureplot sel genes}
+selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
+                    "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
+                    "ENSMUSG00000042436.Mfap4", "ENSMUSG00000071005.Ccl19",
+                    "ENSMUSG00000016494.Cd34", "ENSMUSG00000001119.Col6a1",
+                    "ENSMUSG00000020241.Col6a2","Rosa26eyfp.Rosa26eyfp", 
+                    "ENSMUSG00000023078.Cxcl13")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratmLN, raster = FALSE ,reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+```{r featureplot sel genes-2}
+genes <- data.frame(gene=rownames(seuratmLN)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) 
+
+selGenesAll <- data.frame(geneID=c("Fbln1", "Col15a1", "Cnn1", "Acta2", "Rgs5",
+                                   "Cox4i2", "Pi16", "Cd34", "Emp1", "Ogn",
+                                   "Fhl2")) %>% 
+  left_join(., genes, by = "geneID") 
+
+pList <- sapply(selGenesAll$gene, function(x){
+p <- FeaturePlot(seuratmLN, reduction = "umap", 
+            features = x,
+            cols=c("lightgrey", "darkred"),
+            order = F)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+### features pre filter
+```{r featureplot sel genes pre filter, eval=FALSE}
+selGenesViolin <- c("ENSMUSG00000026395.Ptprc", "ENSMUSG00000031004.Mki67", "ENSMUSG00000063011.Msln", "ENSMUSG00000045680.Tcf21")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratmLN, reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = T)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+### filter object
+```{r filter object, eval=FALSE, include=TRUE}
+## filter out and Ptprc (cluster #12), and pancreatic cells (#15) 
+##??filter?? mesothelial cells (cluster#8) and epithelial/neuronal (#11)
+
+table(seuratmLN$RNA_snn_res.0.4)
+seuratF <- subset(seuratmLN, RNA_snn_res.0.4 %in% c("12", "15"), invert = TRUE)
+table(seuratF$RNA_snn_res.0.4)
+
+seuratmLNf1 <- seuratF
+remove(seuratF)
+table(seuratmLNf1$orig.ident)
+```
+
+### rerun after filter 1
+```{r rerun mLNf1, eval=FALSE, include=TRUE}
+#rerun seurat
+seuratmLNf1 <- NormalizeData (object = seuratmLNf1)
+seuratmLNf1 <- FindVariableFeatures(object = seuratmLNf1)
+seuratmLNf1 <- ScaleData(object = seuratmLNf1, verbose = TRUE)
+seuratmLNf1 <- RunPCA(object=seuratmLNf1, npcs = 30, verbose = FALSE)
+seuratmLNf1 <- RunTSNE(object=seuratmLNf1, reduction="pca", dims = 1:20)
+seuratmLNf1 <- RunUMAP(object=seuratmLNf1, reduction="pca", dims = 1:20)
+seuratmLNf1 <- FindNeighbors(object = seuratmLNf1, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratmLNf1 <- FindClusters(object = seuratmLNf1, resolution = res[i], random.seed = 1234)
+}
+```
+
+## load object mLNEYFPf1
+```{r load object mLNEYFPf1}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf1_seurat.rds"
+seuratmLNf1 <- readRDS(fileNam)
+table(seuratmLN$orig.ident)
+```
+
+## dimplot
+### clustering
+```{r dimplot clustering}
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f",  "#25328a",
+            "#b6856e", "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 
+            "#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF",
+            "#4A6990FF")[1:length(unique(seuratmLNf1$RNA_snn_res.0.4))]
+names(colPal) <- unique(seuratmLNf1$RNA_snn_res.0.4)
+
+DimPlot(seuratmLNf1, reduction = "umap", group.by = "RNA_snn_res.0.4",
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### timepoint
+```{r dimplot age}
+DimPlot(seuratmLNf1, reduction = "umap", group.by = "timepoint",
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### save object
+```{r save object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratmLNf1, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf1_seurat.rds")
+```
+
+
+### filter2 object
+```{r filter2 object, eval=FALSE, include=TRUE}
+## filter out and Ptprc (cluster #12), and pancreatic cells (#15) 
+## and mesothelial cells (cluster#8) and epithelial/neuronal (#11)
+
+table(seuratmLN$RNA_snn_res.0.4)
+seuratF <- subset(seuratmLN, RNA_snn_res.0.4 %in% c("12", "15", "8", "11"), invert = TRUE)
+table(seuratF$RNA_snn_res.0.4)
+
+seuratmLNf2 <- seuratF
+remove(seuratF)
+table(seuratmLNf2$orig.ident)
+```
+
+### rerun after filter 2
+```{r rerun mLNf2, eval=FALSE, include=TRUE}
+#rerun seurat
+seuratmLNf2 <- NormalizeData (object = seuratmLNf2)
+seuratmLNf2 <- FindVariableFeatures(object = seuratmLNf2)
+seuratmLNf2 <- ScaleData(object = seuratmLNf2, verbose = TRUE)
+seuratmLNf2 <- RunPCA(object=seuratmLNf2, npcs = 30, verbose = FALSE)
+seuratmLNf2 <- RunTSNE(object=seuratmLNf2, reduction="pca", dims = 1:20)
+seuratmLNf2 <- RunUMAP(object=seuratmLNf2, reduction="pca", dims = 1:20)
+seuratmLNf2 <- FindNeighbors(object = seuratmLNf2, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratmLNf2 <- FindClusters(object = seuratmLNf2, resolution = res[i], random.seed = 1234)
+}
+```
+
+
+## load object mLNEYFPf1
+```{r load object mLNEYFPf1}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf2_seurat.rds"
+seuratmLNf2<- readRDS(fileNam)
+table(seuratmLN$orig.ident)
+```
+
+## dimplot
+### clustering
+```{r dimplot clustering mLNf2}
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f",  "#25328a",
+            "#b6856e", "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 
+            "#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF",
+            "#4A6990FF")[1:length(unique(seuratmLNf2$RNA_snn_res.0.4))]
+names(colPal) <- unique(seuratmLNf2$RNA_snn_res.0.4)
+
+DimPlot(seuratmLNf2, reduction = "umap", group.by = "RNA_snn_res.0.4",
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### timepoint
+```{r dimplot timepoint mLNf2}
+DimPlot(seuratmLNf2, reduction = "umap", group.by = "timepoint",
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### save object
+```{r save object, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratmLNf2, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf2_seurat.rds")
+```
+
+
+### filter object 3
+```{r filter object 3, eval=FALSE, include=TRUE}
+## filter out and Ptprc (cluster #12), and pancreatic cells (#15) 
+## and mesothelial cells (cluster#8) and epithelial/neuronal (#11)
+## and proliferating cells (cluster #5 and #7)
+
+table(seuratmLN$RNA_snn_res.0.4)
+seuratF <- subset(seuratmLN, RNA_snn_res.0.4 %in% c("12", "15", "8", "11", "5", "7"), invert = TRUE)
+table(seuratF$RNA_snn_res.0.4)
+
+seuratmLNf3 <- seuratF
+remove(seuratF)
+table(seuratmLNf3$orig.ident)
+```
+
+### rerun after filter 3
+```{r rerun mLNf3, eval=FALSE, include=TRUE}
+#rerun seurat
+seuratmLNf3 <- NormalizeData (object = seuratmLNf3)
+seuratmLNf3 <- FindVariableFeatures(object = seuratmLNf3)
+seuratmLNf3 <- ScaleData(object = seuratmLNf3, verbose = TRUE)
+seuratmLNf3 <- RunPCA(object=seuratmLNf3, npcs = 30, verbose = FALSE)
+seuratmLNf3 <- RunTSNE(object=seuratmLNf3, reduction="pca", dims = 1:20)
+seuratmLNf3 <- RunUMAP(object=seuratmLNf3, reduction="pca", dims = 1:20)
+seuratmLNf3 <- FindNeighbors(object = seuratmLNf3, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratmLNf3 <- FindClusters(object = seuratmLNf3, resolution = res[i], random.seed = 1234)
+}
+```
+
+## dimplot
+### clustering
+```{r dimplot clustering mLNf3}
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f",  "#25328a",
+            "#b6856e", "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 
+            "#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF",
+            "#4A6990FF")[1:length(unique(seuratmLNf3$RNA_snn_res.0.4))]
+names(colPal) <- unique(seuratmLNf3$RNA_snn_res.0.4)
+
+DimPlot(seuratmLNf3, reduction = "umap", group.by = "RNA_snn_res.0.4",
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### timepoint
+```{r dimplot timepoint mLNf3}
+DimPlot(seuratmLNf3, reduction = "umap", group.by = "timepoint",
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+### sel markers mLNf3
+```{r vis markers mLNf3}
+genes <- data.frame(gene=rownames(seuratmLNf3)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) 
+
+selGenesAll <- data.frame(geneID=c("Rosa26eyfp", "Ccl19", "Ccl21a", "Cxcl13",
+                                   "Fbln1", "Col15a1", "Cnn1", "Acta2","Myh11", "Rgs5",
+                                   "Cox4i2", "Pi16", "Cd34", "Emp1", "Ogn",
+                                   "Fhl2")) %>% 
+  left_join(., genes, by = "geneID") 
+
+pList <- sapply(selGenesAll$gene, function(x){
+p <- FeaturePlot(seuratmLNf3, reduction = "umap", 
+            features = x,
+            cols=c("lightgrey", "darkred"),
+            order = F)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+### save object
+```{r save object mLNf3, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratmLNf3, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_seurat.rds")
+```
+
+## slingshot 
+```{r slingshot mLNf3}
+sce <- as.SingleCellExperiment(seuratmLNf3)
+sce <- slingshot(sce, clusterLabels = 'RNA_snn_res.0.4', reducedDim = 'UMAP',
+                 start.clus = "1", times = sce$time,
+                 dist.method="simple", extend = 'n', stretch=0)
+
+clustDat <- data.frame(clustCol=colPal) %>% rownames_to_column(., "cluster")
+timepointDat <- data.frame(ageCol=coltimepoint) %>% rownames_to_column(., "timepoint")
+colDat <- data.frame(cluster=sce$RNA_snn_res.0.4) %>%
+  mutate(timepoint=sce$timepoint) %>% left_join(., clustDat, by="cluster") %>% 
+  left_join(., timepointDat, by="timepoint")
+```
+
+## load sce mLNf3 slingshot
+```{r load sce mLNf4 slingshot}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_slingshot_sce.rds"
+scemLNf3<- readRDS(fileNam)
+```
+
+```{r slingshot-1 mLNf3}
+plot(reducedDims(scemLNf3)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3), lwd=2, type = 'lineages', col = 'black')
+```
+
+
+```{r slingshot-2 mLNf3}
+plot(reducedDims(scemLNf3)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3), lwd=2, type = 'lineages', col = 'black')
+```
+
+```{r slingshot-3 mLNf3}
+plot(reducedDims(scemLNf3)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3), lwd=2, col='black')
+```
+
+```{r slingshot-4 mLNf3}
+plot(reducedDims(scemLNf3)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3), lwd=2, col='black')
+```
+
+```{r save slingshot}
+saveRDS(sce, file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_slingshot_sce.rds")
+```
+
+### filter object 4
+```{r filter object 4, eval=FALSE, include=TRUE}
+## filter out and Ptprc (cluster #12), and pancreatic cells (#15) 
+## and mesothelial cells (cluster#8) 
+## and proliferating cells (cluster #5 and #7)
+## BUT NOT and epithelial/neuronal (#11)
+
+table(seuratmLN$RNA_snn_res.0.4)
+seuratF <- subset(seuratmLN, RNA_snn_res.0.4 %in% c("12", "15", "8", "5", "7"), invert = TRUE)
+table(seuratF$RNA_snn_res.0.4)
+
+seuratmLNf4 <- seuratF
+remove(seuratF)
+table(seuratmLNf4$orig.ident)
+```
+
+### rerun after filter 4
+```{r rerun mLNf4, eval=FALSE, include=TRUE}
+#rerun seurat
+seuratmLNf4 <- NormalizeData (object = seuratmLNf4)
+seuratmLNf4 <- FindVariableFeatures(object = seuratmLNf4)
+seuratmLNf4 <- ScaleData(object = seuratmLNf4, verbose = TRUE)
+seuratmLNf4 <- RunPCA(object=seuratmLNf4, npcs = 30, verbose = FALSE)
+seuratmLNf4 <- RunTSNE(object=seuratmLNf4, reduction="pca", dims = 1:20)
+seuratmLNf4 <- RunUMAP(object=seuratmLNf4, reduction="pca", dims = 1:20)
+seuratmLNf4 <- FindNeighbors(object = seuratmLNf4, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratmLNf4 <- FindClusters(object = seuratmLNf4, resolution = res[i], random.seed = 1234)
+}
+```
+
+## dimplot
+### clustering
+```{r dimplot clustering mLNf4}
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f",  "#25328a",
+            "#b6856e", "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 
+            "#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF",
+            "#4A6990FF")[1:length(unique(seuratmLNf4$RNA_snn_res.0.4))]
+names(colPal) <- unique(seuratmLNf4$RNA_snn_res.0.4)
+
+DimPlot(seuratmLNf4, reduction = "umap", group.by = "RNA_snn_res.0.4",
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### timepoint
+```{r dimplot timepoint mLNf3}
+DimPlot(seuratmLNf4, reduction = "umap", group.by = "timepoint",
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("UMAP1") +
+  ylab("UMAP2")
+```
+
+### save object
+```{r save object mLNf3, eval=FALSE, include=TRUE}
+### save seurat object
+saveRDS(seuratmLNf4, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf4_seurat.rds")
+```
+
+### sel markers mLNf4
+```{r vis markers mLNf4}
+genes <- data.frame(gene=rownames(seuratmLNf4)) %>% 
+    mutate(geneID=gsub("^.*\\.", "", gene)) 
+
+selGenesAll <- data.frame(geneID=c("Rosa26eyfp", "Ccl19", "Ccl21a", "Cxcl13",
+                                   "Fbln1", "Col15a1", "Cnn1", "Acta2","Myh11", "Rgs5",
+                                   "Cox4i2", "Pi16", "Cd34", "Emp1", "Ogn",
+                                   "Fhl2", "Mki67")) %>% 
+  left_join(., genes, by = "geneID") 
+
+pList <- sapply(selGenesAll$gene, function(x){
+p <- FeaturePlot(seuratmLNf4, reduction = "umap", 
+            features = x,
+            cols=c("lightgrey", "darkred"),
+            order = F)+
+  theme(legend.position="right")
+  plot(p)
+})
+```
+
+
+```{r slingshot analysis mLNf4}
+sce <- as.SingleCellExperiment(seuratmLNf4)
+sce <- slingshot(sce, clusterLabels = 'RNA_snn_res.0.4', reducedDim = 'UMAP',
+                 start.clus = "13", times = sce$time,
+                 dist.method="simple", extend = 'n', stretch=0)
+
+clustDat <- data.frame(clustCol=colPal) %>% rownames_to_column(., "cluster")
+timepointDat <- data.frame(ageCol=coltimepoint) %>% rownames_to_column(., "timepoint")
+colDat <- data.frame(cluster=sce$RNA_snn_res.0.4) %>%
+  mutate(timepoint=sce$timepoint) %>% left_join(., clustDat, by="cluster") %>% 
+  left_join(., timepointDat, by="timepoint")
+```
+
+## load sce mLNf4 slingshot
+```{r load sce mLNf4 slingshot}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf4_slingshot_sce.rds"
+scemLNf4<- readRDS(fileNam)
+```
+
+```{r slingshot-1}
+plot(reducedDims(scemLNf4)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf4), lwd=2, type = 'lineages', col = 'black')
+```
+
+```{r slingshot-2}
+plot(reducedDims(scemLNf4)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf4), lwd=2, type = 'lineages', col = 'black')
+```
+
+```{r slingshot-3}
+plot(reducedDims(scemLNf4)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf4), lwd=2, col='black')
+```
+
+```{r slingshot-4}
+plot(reducedDims(scemLNf4)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf4), lwd=2, col='black')
+```
+
+```{r save slingshot}
+saveRDS(sce, file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf4_slingshot_sce.rds")
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```
