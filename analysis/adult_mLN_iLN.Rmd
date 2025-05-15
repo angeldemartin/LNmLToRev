@@ -196,7 +196,7 @@ DimPlot(seuratA, reduction = "umap", group.by = "RNA_snn_res.0.25" ,
 
 ### location
 ```{r umap location}
-DimPlot(seuratA, reduction = "umap", group.by = "location" ,
+DimPlot(seuratA, reduction = "umap", group.by = "location", cols = collocation,
         pt.size = 0.1, label = T, shuffle = T) +
   theme_bw() +
   theme(axis.text = element_blank(), axis.ticks = element_blank(), 
@@ -325,6 +325,39 @@ DimPlot(seuratA.int, reduction = "umap", group.by = "label", cols = colLab)+
 DimPlot(seuratA.int, reduction = "umap", group.by = "label", pt.size=0.5,
         cols = colLab, shuffle = T)+
   theme_void()
+
+DimPlot(seuratA.int, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = T)+
+  theme_void() + 
+  theme(legend.position = "none") 
+```
+
+### label mLN iLN sep
+####mLN
+```{r umap int label sep mLN}
+seuratA.intmLN <- subset(seuratA.int, location == "mLN")
+
+DimPlot(seuratA.intmLN, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = T)+
+  theme_void()
+
+DimPlot(seuratA.intmLN, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = T)+
+  theme_void() + 
+  theme(legend.position = "none") 
+```
+####iLN
+```{r umap int label sep iLN}
+seuratA.intiLN <- subset(seuratA.int, location == "iLN")
+
+DimPlot(seuratA.intiLN, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = T)+
+  theme_void()
+
+DimPlot(seuratA.intiLN, reduction = "umap", group.by = "label", pt.size=0.5,
+        cols = colLab, shuffle = T)+
+  theme_void() + 
+  theme(legend.position = "none") 
 ```
 
 ### label split by location
@@ -355,6 +388,26 @@ DimPlot(seuratA.int, reduction = "umap", group.by = "location", cols = colLoc,
 DimPlot(seuratA.int, reduction = "umap", group.by = "location", pt.size=0.5,
         cols = colLoc, split.by = "location", shuffle = T)+
   theme_void()
+```
+
+### features int
+```{r featureplot int sel genes}
+selGenesViolin <- c("ENSMUSG00000022037.Clu", "ENSMUSG00000094686.Ccl21a",
+                    "ENSMUSG00000074934.Grem1", "ENSMUSG00000050069.Grem2",
+                    "ENSMUSG00000042436.Mfap4", "ENSMUSG00000071005.Ccl19",
+                    "ENSMUSG00000016494.Cd34", "ENSMUSG00000024011.Pi16", 
+                    "ENSMUSG00000001119.Col6a1", "ENSMUSG00000020241.Col6a2",
+                    "Rosa26eyfp.Rosa26eyfp", "ENSMUSG00000023078.Cxcl13",
+                    "ENSMUSG00000032135.Mcam", "ENSMUSG00000023034.Nr4a1")
+
+pList <- sapply(selGenesViolin, function(x){
+  p <- FeaturePlot(seuratA.int, reduction = "umap", 
+            features = x, 
+            cols=c("lightgrey", "darkred"),
+            order = F)+
+  theme(legend.position="right")
+  plot(p)
+})
 ```
 
 ## cluster characterization

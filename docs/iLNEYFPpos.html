@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="A.DeMartin" />
+
+<meta name="date" content="2025-05-14" />
+
+<title>iLNEYFPpos</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LNmLToRev</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">iLNEYFPpos</h1>
+<h4 class="author">A.DeMartin</h4>
+<h4 class="date">2025-05-14</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-05-15
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LNmLToRev/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250425code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250425)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250425code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250425)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFPonly_seurat.rds
+</td>
+<td style="text-align:left;">
+data/LNmLToRev_EYFPonly_seurat.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLN_seurat.rds
+</td>
+<td style="text-align:left;">
+data/LNmLToRev_EYFP_iLN_seurat.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/markerGenes_iLNEYFP_RNA_snn_res.0.4
+</td>
+<td style="text-align:left;">
+data/markerGenes_iLNEYFP_RNA_snn_res.0.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLNf3_seurat.rds
+</td>
+<td style="text-align:left;">
+data/LNmLToRev_EYFP_iLNf3_seurat.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds
+</td>
+<td style="text-align:left;">
+data/LNmLToRev_adultonly_seurat.integrated.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/markerGenes_iLNEYFPf3_RNA_snn_res.0.4
+</td>
+<td style="text-align:left;">
+data/markerGenes_iLNEYFPf3_RNA_snn_res.0.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLNf3_slingshot_v2_sce.rds
+</td>
+<td style="text-align:left;">
+data/LNmLToRev_EYFP_iLNf3_slingshot_v2_sce.rds
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtreeaff8a3107a2913937d3cdecf93c348b9b7662fc1targetblankaff8a31a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/angeldemartin/LNmLToRev/tree/aff8a3107a2913937d3cdecf93c348b9b7662fc1" target="_blank">aff8a31</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtreeaff8a3107a2913937d3cdecf93c348b9b7662fc1targetblankaff8a31a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/angeldemartin/LNmLToRev/tree/aff8a3107a2913937d3cdecf93c348b9b7662fc1" target="_blank">aff8a31</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.DS_Store
+    Ignored:    data/files/
+    Ignored:    data/tradeSEQ/
+
+Untracked files:
+    Untracked:  analysis/iLNEYFPpos.Rmd
+    Untracked:  analysis/tradeSeq.Rmd
+
+Unstaged changes:
+    Modified:   analysis/adult_mLN_iLN.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/mLNEYFPpos.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-packages" class="section level2">
+<h2>load packages</h2>
+</div>
+<div id="load-object-eyfponly-and-preprocess" class="section level2">
+<h2>load object EYFPonly and preprocess</h2>
+<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFPonly_seurat.rds&quot;
+seuratEYFP &lt;- readRDS(fileNam)
+table(seuratEYFP$dataset)
+table(seuratEYFP$RNA_snn_res.0.25)
+table(seuratEYFP$orig.ident)</code></pre>
+<div id="subset-iln-and-rerun" class="section level3">
+<h3>subset iLN and rerun</h3>
+<pre class="r"><code>table(seuratEYFP$location)
+seuratiLN &lt;- subset(seuratEYFP, location == &quot;iLN&quot;)
+table(seuratiLN$orig.ident)
+
+#rerun seurat
+seuratiLN &lt;- NormalizeData (object = seuratiLN)
+seuratiLN &lt;- FindVariableFeatures(object = seuratiLN)
+seuratiLN &lt;- ScaleData(object = seuratiLN, verbose = TRUE)
+seuratiLN &lt;- RunPCA(object=seuratiLN, npcs = 30, verbose = FALSE)
+seuratiLN &lt;- RunTSNE(object=seuratiLN, reduction=&quot;pca&quot;, dims = 1:20)
+seuratiLN &lt;- RunUMAP(object=seuratiLN, reduction=&quot;pca&quot;, dims = 1:20)
+seuratiLN &lt;- FindNeighbors(object = seuratiLN, reduction = &quot;pca&quot;, dims= 1:20)
+
+res &lt;- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratiLN &lt;- FindClusters(object = seuratiLN, resolution = res[i], random.seed = 1234)
+}</code></pre>
+</div>
+<div id="save-object" class="section level3">
+<h3>save object</h3>
+<pre class="r"><code>### save seurat object
+saveRDS(seuratiLN, file=&quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLN_seurat.rds&quot;)</code></pre>
+</div>
+</div>
+<div id="load-object-ilneyfp" class="section level2">
+<h2>load object iLNEYFP</h2>
+<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLN_seurat.rds&quot;
+seuratiLN &lt;- readRDS(fileNam)
+table(seuratiLN$dataset)</code></pre>
+<pre><code>
+    380131_02-2_20250224_Cxcl13EYFP_P7_iLN_YFPneg     380131_03-3_20250224_Cxcl13EYFP_P7_iLN_YFPpos 
+                                               73                                              3026 
+      380131_06-6_20250225_Cxcl13EYFP_E18_iLN_fib 380131_11-11_20250305_Mu_Cxcl13EYFP_Adult_pLN_FRC 
+                                              165                                              3424 
+   382581_01-1_20250311_Mu_Cxcl13EYFP_E18_iLN_fib  382581_04-4_20250319_Mu_Cxcl13EYFP_P7_iLN_YFPpos 
+                                             1095                                              2689 
+ 382581_05-5_20250319_Mu_Cxcl13EYFP_P7_iLN_YFPneg  382581_08-8_20250320_Mu_Cxcl13EYFP_Adult_pLN_FRC 
+                                               99                                              4279 
+ 382581_12-12_20250402_Mu_Cxcl13EYFP_3wk_iLN_fib1  382581_13-13_20250402_Mu_Cxcl13EYFP_3wk_iLN_fib2 
+                                             3261                                              3590 </code></pre>
+<pre class="r"><code>table(seuratiLN$RNA_snn_res.0.25)</code></pre>
+<pre><code>
+   0    1    2    3    4    5    6    7    8 
+5326 4591 3946 3824 1621 1550  336  296  211 </code></pre>
+<pre class="r"><code>table(seuratiLN$orig.ident)</code></pre>
+<pre><code>
+      
+21701 </code></pre>
+<div id="set-color-vectors" class="section level3">
+<h3>set color vectors</h3>
+<pre class="r"><code>coltimepoint &lt;- c(&quot;#440154FF&quot;, &quot;#3B528BFF&quot;, &quot;#21908CFF&quot;, &quot;#5DC863FF&quot;)
+names(coltimepoint) &lt;- c(&quot;E18&quot;, &quot;P7&quot;, &quot;3w&quot;, &quot;8w&quot;)
+
+colPal &lt;- c(&quot;#DAF7A6&quot;, &quot;#FFC300&quot;, &quot;#FF5733&quot;, &quot;#C70039&quot;, &quot;#900C3F&quot;, &quot;#b66e8d&quot;,
+            &quot;#61a4ba&quot;, &quot;#6178ba&quot;, &quot;#54a87f&quot;,  &quot;#25328a&quot;,
+            &quot;#b6856e&quot;, &quot;#0073C2FF&quot;, &quot;#EFC000FF&quot;, &quot;#868686FF&quot;, &quot;#CD534CFF&quot;, 
+            &quot;#7AA6DCFF&quot;, &quot;#003C67FF&quot;, &quot;#8F7700FF&quot;, &quot;#3B3B3BFF&quot;, &quot;#A73030FF&quot;,
+            &quot;#4A6990FF&quot;)[1:length(unique(seuratiLN$RNA_snn_res.0.4))]
+names(colPal) &lt;- unique(seuratiLN$RNA_snn_res.0.4)
+
+collocation &lt;- c(&quot;#61baba&quot;, &quot;#ba6161&quot;)
+names(collocation) &lt;- c(&quot;iLN&quot;, &quot;mLN&quot;)</code></pre>
+</div>
+</div>
+<div id="dimplot" class="section level2">
+<h2>dimplot</h2>
+<div id="clustering" class="section level3">
+<h3>clustering</h3>
+<pre class="r"><code>DimPlot(seuratiLN, reduction = &quot;umap&quot;, group.by = &quot;RNA_snn_res.0.4&quot;,
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab(&quot;UMAP1&quot;) +
+  ylab(&quot;UMAP2&quot;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/dimplot%20clustering-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="timepoint" class="section level3">
+<h3>timepoint</h3>
+<pre class="r"><code>DimPlot(seuratiLN, reduction = &quot;umap&quot;, group.by = &quot;timepoint&quot;,
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab(&quot;UMAP1&quot;) +
+  ylab(&quot;UMAP2&quot;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/dimplot%20age-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="calculate-cluster-marker-genes" class="section level3">
+<h3>calculate cluster marker genes</h3>
+<pre class="r"><code>##cluster marker
+Idents(seuratiLN) &lt;- seuratiLN$RNA_snn_res.0.4
+markerGenes &lt;- FindAllMarkers(seuratiLN, only.pos=T) %&gt;% 
+  dplyr::filter(p_val_adj &lt; 0.01)
+
+#save table
+write.table(markerGenes, 
+            file= &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/markerGenes_iLNEYFP_RNA_snn_res.0.4&quot;,
+            sep=&quot;\t&quot;,
+            quote=F,
+            row.names=F,
+            col.names=T)</code></pre>
+</div>
+</div>
+<div id="plot-features" class="section level2">
+<h2>plot features</h2>
+<pre class="r"><code>selGenesViolin &lt;- c(&quot;ENSMUSG00000022037.Clu&quot;, &quot;ENSMUSG00000094686.Ccl21a&quot;,
+                    &quot;ENSMUSG00000074934.Grem1&quot;, &quot;ENSMUSG00000050069.Grem2&quot;,
+                    &quot;ENSMUSG00000042436.Mfap4&quot;, &quot;ENSMUSG00000071005.Ccl19&quot;,
+                    &quot;ENSMUSG00000016494.Cd34&quot;, &quot;ENSMUSG00000001119.Col6a1&quot;,
+                    &quot;ENSMUSG00000020241.Col6a2&quot;,&quot;Rosa26eyfp.Rosa26eyfp&quot;, 
+                    &quot;ENSMUSG00000023078.Cxcl13&quot;, &quot;ENSMUSG00000037405.Icam1&quot;, &quot;ENSMUSG00000027962.Vcam1&quot;)
+
+pList &lt;- sapply(selGenesViolin, function(x){
+  p &lt;- FeaturePlot(seuratiLN, raster = FALSE ,reduction = &quot;umap&quot;, 
+            features = x, 
+            cols=c(&quot;lightgrey&quot;, &quot;darkred&quot;),
+            order = T)+
+  theme(legend.position=&quot;right&quot;)
+  plot(p)
+})</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-8.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-9.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-10.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-11.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-12.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-13.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>genes &lt;- data.frame(gene=rownames(seuratiLN)) %&gt;% 
+    mutate(geneID=gsub(&quot;^.*\\.&quot;, &quot;&quot;, gene)) 
+
+selGenesAll &lt;- data.frame(geneID=c(&quot;Fbln1&quot;, &quot;Col15a1&quot;, &quot;Cnn1&quot;, &quot;Acta2&quot;, &quot;Rgs5&quot;,
+                                   &quot;Cox4i2&quot;, &quot;Pi16&quot;, &quot;Cd34&quot;, &quot;Emp1&quot;, &quot;Ogn&quot;,
+                                   &quot;Fhl2&quot;, &quot;Mcam&quot;)) %&gt;% 
+  left_join(., genes, by = &quot;geneID&quot;) 
+
+pList &lt;- sapply(selGenesAll$gene, function(x){
+p &lt;- FeaturePlot(seuratiLN, reduction = &quot;umap&quot;, 
+            features = x,
+            cols=c(&quot;lightgrey&quot;, &quot;darkred&quot;),
+            order = F)+
+  theme(legend.position=&quot;right&quot;)
+  plot(p)
+})</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-8.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-9.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-10.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-11.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/featureplot%20sel%20genes-2-12.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>selGenesViolin &lt;- c(&quot;ENSMUSG00000026395.Ptprc&quot;, &quot;ENSMUSG00000031004.Mki67&quot;, &quot;ENSMUSG00000063011.Msln&quot;, &quot;ENSMUSG00000045680.Tcf21&quot;)
+
+pList &lt;- sapply(selGenesViolin, function(x){
+  p &lt;- FeaturePlot(seuratiLN, reduction = &quot;umap&quot;, 
+            features = x, 
+            cols=c(&quot;lightgrey&quot;, &quot;darkred&quot;),
+            order = T)+
+  theme(legend.position=&quot;right&quot;)
+  plot(p)
+})</code></pre>
+</div>
+<div id="filter" class="section level2">
+<h2>filter</h2>
+<div id="filter-object-3" class="section level3">
+<h3>filter object 3</h3>
+<pre class="r"><code>## filter out and Ptprc (cluster #10),
+## and proliferating cells (cluster #7 and #8)
+
+table(seuratiLN$RNA_snn_res.0.4)
+seuratF &lt;- subset(seuratiLN, RNA_snn_res.0.4 %in% c(&quot;10&quot;, &quot;8&quot;, &quot;7&quot;), invert = TRUE)
+table(seuratF$RNA_snn_res.0.4)
+
+seuratiLNf3 &lt;- seuratF
+remove(seuratF)
+table(seuratiLNf3$orig.ident)</code></pre>
+</div>
+<div id="rerun-after-filter-3" class="section level3">
+<h3>rerun after filter 3</h3>
+<pre class="r"><code>#rerun seurat
+seuratiLNf3 &lt;- NormalizeData (object = seuratiLNf3)
+seuratiLNf3 &lt;- FindVariableFeatures(object = seuratiLNf3)
+seuratiLNf3 &lt;- ScaleData(object = seuratiLNf3, verbose = TRUE)
+seuratiLNf3 &lt;- RunPCA(object=seuratiLNf3, npcs = 30, verbose = FALSE)
+seuratiLNf3 &lt;- RunTSNE(object=seuratiLNf3, reduction=&quot;pca&quot;, dims = 1:20)
+seuratiLNf3 &lt;- RunUMAP(object=seuratiLNf3, reduction=&quot;pca&quot;, dims = 1:20)
+seuratiLNf3 &lt;- FindNeighbors(object = seuratiLNf3, reduction = &quot;pca&quot;, dims= 1:20)
+
+res &lt;- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratiLNf3 &lt;- FindClusters(object = seuratiLNf3, resolution = res[i], random.seed = 1234)
+}</code></pre>
+</div>
+</div>
+<div id="load-object-mlneyfpf3" class="section level2">
+<h2>load object mLNEYFPf3</h2>
+<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLNf3_seurat.rds&quot;
+seuratiLNf3 &lt;- readRDS(fileNam)
+table(seuratiLNf3$dataset)</code></pre>
+<pre><code>
+    380131_02-2_20250224_Cxcl13EYFP_P7_iLN_YFPneg     380131_03-3_20250224_Cxcl13EYFP_P7_iLN_YFPpos 
+                                               54                                              2506 
+      380131_06-6_20250225_Cxcl13EYFP_E18_iLN_fib 380131_11-11_20250305_Mu_Cxcl13EYFP_Adult_pLN_FRC 
+                                              101                                              3393 
+   382581_01-1_20250311_Mu_Cxcl13EYFP_E18_iLN_fib  382581_04-4_20250319_Mu_Cxcl13EYFP_P7_iLN_YFPpos 
+                                              909                                              2286 
+ 382581_05-5_20250319_Mu_Cxcl13EYFP_P7_iLN_YFPneg  382581_08-8_20250320_Mu_Cxcl13EYFP_Adult_pLN_FRC 
+                                               82                                              4166 
+ 382581_12-12_20250402_Mu_Cxcl13EYFP_3wk_iLN_fib1  382581_13-13_20250402_Mu_Cxcl13EYFP_3wk_iLN_fib2 
+                                             2978                                              3379 </code></pre>
+</div>
+<div id="dimplot-1" class="section level2">
+<h2>dimplot</h2>
+<div id="clustering-1" class="section level3">
+<h3>clustering</h3>
+<pre class="r"><code>colPal &lt;- c(&quot;#DAF7A6&quot;, &quot;#FFC300&quot;, &quot;#FF5733&quot;, &quot;#C70039&quot;, &quot;#900C3F&quot;, &quot;#b66e8d&quot;,
+            &quot;#61a4ba&quot;, &quot;#6178ba&quot;, &quot;#54a87f&quot;,  &quot;#25328a&quot;,
+            &quot;#b6856e&quot;, &quot;#0073C2FF&quot;, &quot;#EFC000FF&quot;, &quot;#868686FF&quot;, &quot;#CD534CFF&quot;, 
+            &quot;#7AA6DCFF&quot;, &quot;#003C67FF&quot;, &quot;#8F7700FF&quot;, &quot;#3B3B3BFF&quot;, &quot;#A73030FF&quot;,
+            &quot;#4A6990FF&quot;)[1:length(unique(seuratiLNf3$RNA_snn_res.0.4))]
+names(colPal) &lt;- unique(seuratiLNf3$RNA_snn_res.0.4)
+
+DimPlot(seuratiLNf3, reduction = &quot;umap&quot;, group.by = &quot;RNA_snn_res.0.4&quot;,
+        cols = colPal, label = TRUE)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab(&quot;UMAP1&quot;) +
+  ylab(&quot;UMAP2&quot;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/dimplot%20clustering%20mLNf3-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="timepoint-1" class="section level3">
+<h3>timepoint</h3>
+<pre class="r"><code>DimPlot(seuratiLNf3, reduction = &quot;umap&quot;, group.by = &quot;timepoint&quot;,
+        cols = coltimepoint)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab(&quot;UMAP1&quot;) +
+  ylab(&quot;UMAP2&quot;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/dimplot%20timepoint%20mLNf3-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="label-transfer" class="section level3">
+<h3>label transfer</h3>
+<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_adultonly_seurat.integrated.rds&quot;
+seuratLab &lt;- readRDS(fileNam)
+
+seuratLab &lt;- subset(seuratLab, location==&quot;iLN&quot;)
+seuratLab &lt;- subset(seuratLab, EYFP==&quot;pos&quot;)
+table(seuratLab$label)</code></pre>
+<pre><code>
+  actMedRC    FDC/MRC      MedRC MedRC/IFRC    Pi16+RC        PRC       TBRC        TRC       VSMC 
+      1563        299       1268       1558          9        338       1270       1152         45 </code></pre>
+<pre class="r"><code>labCells &lt;- data.frame(label=seuratLab$label) %&gt;% rownames_to_column(., &quot;cell&quot;)
+allCell &lt;- data.frame(cell=colnames(seuratiLNf3)) %&gt;% 
+  left_join(., labCells, by= &quot;cell&quot;)
+allCell$label[which(is.na(allCell$label))] &lt;- &quot;unassigned&quot;
+seuratiLNf3$label &lt;- allCell$label
+
+table(seuratiLNf3$timepoint)</code></pre>
+<pre><code>
+ E18   P7   3w   8w 
+1010 4928 6357 7559 </code></pre>
+<pre class="r"><code>table(seuratiLNf3$label)</code></pre>
+<pre><code>
+  actMedRC    FDC/MRC      MedRC MedRC/IFRC    Pi16+RC        PRC       TBRC        TRC unassigned 
+      1563        299       1268       1558          9        338       1270       1151      12353 
+      VSMC 
+        45 </code></pre>
+<pre class="r"><code>colLab &lt;- c(&quot;#42a071&quot;, &quot;#900C3F&quot;,&quot;#b66e8d&quot;, &quot;#61a4ba&quot;, &quot;#424671&quot;, &quot;#003C67FF&quot;,
+            &quot;#e3953d&quot;, &quot;#714542&quot;, &quot;#b6856e&quot;, &quot;#a4a4a4&quot;)
+
+names(colLab) &lt;- c(&quot;FDC/MRC&quot;, &quot;TRC&quot;, &quot;TBRC&quot;, &quot;MedRC/IFRC&quot;, &quot;MedRC&quot; , &quot;actMedRC&quot;,
+                   &quot;PRC&quot;, &quot;Pi16+RC&quot;, &quot;VSMC&quot;, &quot;unassigned&quot;)
+
+DimPlot(seuratiLNf3, reduction = &quot;umap&quot;, group.by = &quot;label&quot;,
+        cols = colLab, shuffle=T)+
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab(&quot;UMAP1&quot;) +
+  ylab(&quot;UMAP2&quot;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/transfer%20label-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(seuratiLNf3, reduction = &quot;umap&quot;, group.by = &quot;label&quot;, pt.size=0.5,
+        cols = colLab, order = TRUE)+
+  theme_void()</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/transfer%20label-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(seuratiLNf3, reduction = &quot;umap&quot;, group.by = &quot;label&quot;, pt.size=0.5,
+        cols = colLab, shuffle = FALSE)+
+  theme_void()</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/transfer%20label-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="calculate-cluster-marker-genes-ilnf3" class="section level3">
+<h3>calculate cluster marker genes iLNf3</h3>
+<pre class="r"><code>##cluster marker
+Idents(seuratiLNf3) &lt;- seuratiLNf3$RNA_snn_res.0.4
+markerGenes &lt;- FindAllMarkers(seuratiLNf3, only.pos=T) %&gt;% 
+  dplyr::filter(p_val_adj &lt; 0.01)
+
+#save table
+write.table(markerGenes, 
+            file= &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/markerGenes_iLNEYFPf3_RNA_snn_res.0.4&quot;,
+            sep=&quot;\t&quot;,
+            quote=F,
+            row.names=F,
+            col.names=T)</code></pre>
+</div>
+</div>
+<div id="plot-features-1" class="section level2">
+<h2>plot features</h2>
+<div id="sel-markers-mlnf3" class="section level3">
+<h3>sel markers mLNf3</h3>
+<pre class="r"><code>genes &lt;- data.frame(gene=rownames(seuratiLNf3)) %&gt;% 
+    mutate(geneID=gsub(&quot;^.*\\.&quot;, &quot;&quot;, gene)) 
+
+selGenesAll &lt;- data.frame(geneID=c(&quot;Rosa26eyfp&quot;,&quot;tdTomato&quot;, &quot;Ccl19&quot;, &quot;Ccl21a&quot;, &quot;Cxcl13&quot;,
+                                   &quot;Fbln1&quot;, &quot;Col15a1&quot;, &quot;Cnn1&quot;, &quot;Acta2&quot;,&quot;Myh11&quot;, &quot;Rgs5&quot;,
+                                   &quot;Cox4i2&quot;, &quot;Pi16&quot;, &quot;Cd34&quot;, &quot;Emp1&quot;, &quot;Ogn&quot;,&quot;Des&quot;,
+                                   &quot;Fhl2&quot;)) %&gt;% 
+  left_join(., genes, by = &quot;geneID&quot;) 
+
+pList &lt;- sapply(selGenesAll$gene, function(x){
+p &lt;- FeaturePlot(seuratiLNf3, reduction = &quot;umap&quot;, 
+            features = x,
+            cols=c(&quot;lightgrey&quot;, &quot;darkred&quot;),
+            order = F) +
+  theme(legend.position=&quot;right&quot;)
+  plot(p)
+})</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-8.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-9.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-10.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-11.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-12.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-13.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-14.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-15.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-16.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-17.png" width="672" style="display: block; margin: auto;" /><img src="figure/iLNEYFPpos.Rmd/vis%20markers%20mLNf3-18.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="save-object-1" class="section level3">
+<h3>save object</h3>
+<pre class="r"><code>### save seurat object
+saveRDS(seuratiLNf3, file=&quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLNf3_seurat.rds&quot;)</code></pre>
+</div>
+</div>
+<div id="slingshot-v2" class="section level2">
+<h2>slingshot v2</h2>
+<pre class="r"><code>sce &lt;- as.SingleCellExperiment(seuratiLNf3)
+sc## include endpoint in slingshot analysis
+sce &lt;- slingshot(sce, clusterLabels = &#39;RNA_snn_res.0.4&#39;, reducedDim = &#39;UMAP&#39;,
+                 start.clus = &quot;6&quot;, end.clus = c(&quot;0&quot;, &quot;4&quot;, &quot;7&quot;, &quot;8&quot;),
+                 dist.method=&quot;simple&quot;, extend = &#39;n&#39;, stretch=0)</code></pre>
+<div id="load-sce-ilnf3-slingshot-v2" class="section level3">
+<h3>load sce iLNf3 slingshot v2</h3>
+<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLNf3_slingshot_v2_sce.rds&quot;
+sceiLNf3v2&lt;- readRDS(fileNam)</code></pre>
+<pre class="r"><code>clustDat &lt;- data.frame(clustCol=colPal) %&gt;% rownames_to_column(., &quot;cluster&quot;)
+timepointDat &lt;- data.frame(ageCol=coltimepoint) %&gt;% rownames_to_column(., &quot;timepoint&quot;)
+colDat &lt;- data.frame(cluster=sceiLNf3v2$RNA_snn_res.0.4) %&gt;%
+  mutate(timepoint=sceiLNf3v2$timepoint) %&gt;% left_join(., clustDat, by=&quot;cluster&quot;) %&gt;% 
+  left_join(., timepointDat, by=&quot;timepoint&quot;)</code></pre>
+<pre class="r"><code>plot(reducedDims(sceiLNf3v2)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, type = &#39;lineages&#39;, col = &#39;black&#39;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/slingshot-1%20iLNf3%20v2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(reducedDims(sceiLNf3v2)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, type = &#39;lineages&#39;, col = &#39;black&#39;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/slingshot-2%20iLNf3%20v2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(reducedDims(sceiLNf3v2)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col=&#39;black&#39;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/slingshot-3%20iLNf3%20v2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(reducedDims(sceiLNf3v2)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col=&#39;black&#39;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/slingshot-4%20iLNf3%20v2-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="save-slingshot-object-v2" class="section level3">
+<h3>save slingshot object v2</h3>
+<pre class="r"><code>saveRDS(sce, file= &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_iLNf3_slingshot_v2_sce.rds&quot;)</code></pre>
+<pre class="r"><code>summary(sceiLNf3v2$slingPseudotime_1)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+   0.00   10.44   13.04   12.35   16.14   18.16   12555 </code></pre>
+<pre class="r"><code>summary(sceiLNf3v2$slingPseudotime_2)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+   0.00   10.99   14.12   13.37   17.17   19.49   10678 </code></pre>
+<pre class="r"><code>summary(sceiLNf3v2$slingPseudotime_3)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+   0.00    7.63   11.99   11.10   14.69   16.53   13746 </code></pre>
+<pre class="r"><code>summary(sceiLNf3v2$slingPseudotime_4)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+   0.00   10.86   14.65   13.22   16.74   18.68   11024 </code></pre>
+<pre class="r"><code>summary(sceiLNf3v2$slingPseudotime_5)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+  0.000   4.090   5.509   5.926   7.710  10.073   17934 </code></pre>
+<pre class="r"><code>colors &lt;- colorRampPalette(rev(brewer.pal(11,&#39;Spectral&#39;)))(100)
+plotcol &lt;- colors[cut(slingAvgPseudotime(SlingshotDataSet(sceiLNf3v2)), breaks=100)]
+
+plot(reducedDims(sceiLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col=&#39;black&#39;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>colors &lt;- colorRampPalette(brewer.pal(11,&#39;YlOrRd&#39;))(100)
+plotcol &lt;- colors[cut(slingAvgPseudotime(SlingshotDataSet(sceiLNf3v2)), breaks=100)]
+
+plot(reducedDims(sceiLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col=&#39;black&#39;)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### color lineages
+colLin &lt;- c(&quot;#42a071&quot;,&quot;#900C3F&quot;,&quot;#e3953d&quot;, &quot;#424671&quot;, &quot;#b6856e&quot;)
+names(colLin) &lt;- c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;)
+
+plot(reducedDims(sceiLNf3v2)$UMAP, col = &quot;#bfbcbd&quot;, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=4, col=colLin)</code></pre>
+<p><img src="figure/iLNEYFPpos.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="session-info" class="section level2">
+<h2>session info</h2>
+<pre class="r"><code>date()</code></pre>
+<pre><code>[1] &quot;Thu May 15 11:12:46 2025&quot;</code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-apple-darwin20
+Running under: macOS Ventura 13.7.5
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: Europe/Zurich
+tzcode source: internal
+
+attached base packages:
+[1] grid      stats4    stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] RColorBrewer_1.1-3          slingshot_2.12.0            TrajectoryUtils_1.12.0     
+ [4] princurve_2.1.6             NCmisc_1.2.0                VennDiagram_1.7.3          
+ [7] futile.logger_1.4.3         ggupset_0.4.1               gridExtra_2.3              
+[10] DOSE_3.30.5                 enrichplot_1.24.4           msigdbr_10.0.2             
+[13] org.Hs.eg.db_3.19.1         AnnotationDbi_1.66.0        clusterProfiler_4.12.6     
+[16] multtest_2.60.0             metap_1.12                  scater_1.32.1              
+[19] scuttle_1.14.0              destiny_3.18.0              circlize_0.4.16            
+[22] muscat_1.18.0               viridis_0.6.5               viridisLite_0.4.2          
+[25] lubridate_1.9.4             forcats_1.0.0               stringr_1.5.1              
+[28] purrr_1.0.4                 readr_2.1.5                 tidyr_1.3.1                
+[31] tibble_3.2.1                tidyverse_2.0.0             dplyr_1.1.4                
+[34] SingleCellExperiment_1.26.0 SummarizedExperiment_1.34.0 Biobase_2.64.0             
+[37] GenomicRanges_1.56.2        GenomeInfoDb_1.40.1         IRanges_2.38.1             
+[40] S4Vectors_0.42.1            BiocGenerics_0.50.0         MatrixGenerics_1.16.0      
+[43] matrixStats_1.5.0           pheatmap_1.0.12             ggpubr_0.6.0               
+[46] ggplot2_3.5.2               Seurat_5.3.0                SeuratObject_5.1.0         
+[49] sp_2.2-0                    runSeurat3_0.1.0            ExploreSCdataSeurat3_0.1.0 
+
+loaded via a namespace (and not attached):
+  [1] igraph_2.1.4              ica_1.0-3                 plotly_4.10.4            
+  [4] Formula_1.2-5             zlibbioc_1.50.0           tidyselect_1.2.1         
+  [7] bit_4.6.0                 doParallel_1.0.17         clue_0.3-66              
+ [10] lattice_0.22-7            rjson_0.2.23              blob_1.2.4               
+ [13] S4Arrays_1.4.1            pbkrtest_0.5.4            parallel_4.4.0           
+ [16] png_0.1-8                 plotrix_3.8-4             cli_3.6.5                
+ [19] ggplotify_0.1.2           goftest_1.2-3             VIM_6.2.2                
+ [22] variancePartition_1.34.0  BiocNeighbors_1.22.0      shadowtext_0.1.4         
+ [25] uwot_0.2.3                curl_6.2.2                tidytree_0.4.6           
+ [28] mime_0.13                 evaluate_1.0.3            ComplexHeatmap_2.20.0    
+ [31] stringi_1.8.7             backports_1.5.0           lmerTest_3.1-3           
+ [34] qqconf_1.3.2              httpuv_1.6.16             magrittr_2.0.3           
+ [37] rappdirs_0.3.3            splines_4.4.0             ggraph_2.2.1             
+ [40] sctransform_0.4.2         ggbeeswarm_0.7.2          DBI_1.2.3                
+ [43] jquerylib_0.1.4           smoother_1.3              withr_3.0.2              
+ [46] git2r_0.36.2              corpcor_1.6.10            reformulas_0.4.1         
+ [49] class_7.3-23              rprojroot_2.0.4           lmtest_0.9-40            
+ [52] tidygraph_1.3.1           formatR_1.14              colourpicker_1.3.0       
+ [55] htmlwidgets_1.6.4         fs_1.6.6                  ggrepel_0.9.6            
+ [58] labeling_0.4.3            fANCOVA_0.6-1             SparseArray_1.4.8        
+ [61] DESeq2_1.44.0             ranger_0.17.0             DEoptimR_1.1-3-1         
+ [64] reticulate_1.42.0         hexbin_1.28.5             zoo_1.8-14               
+ [67] XVector_0.44.0            knitr_1.50                ggplot.multistats_1.0.1  
+ [70] UCSC.utils_1.0.0          RhpcBLASctl_0.23-42       timechange_0.3.0         
+ [73] foreach_1.5.2             patchwork_1.3.0           caTools_1.18.3           
+ [76] data.table_1.17.2         ggtree_3.12.0             R.oo_1.27.1              
+ [79] RSpectra_0.16-2           irlba_2.3.5.1             fastDummies_1.7.5        
+ [82] gridGraphics_0.5-1        lazyeval_0.2.2            yaml_2.3.10              
+ [85] survival_3.8-3            scattermore_1.2           crayon_1.5.3             
+ [88] RcppAnnoy_0.0.22          progressr_0.15.1          tweenr_2.0.3             
+ [91] later_1.4.2               ggridges_0.5.6            codetools_0.2-20         
+ [94] GlobalOptions_0.1.2       aod_1.3.3                 KEGGREST_1.44.1          
+ [97] Rtsne_0.17                shape_1.4.6.1             limma_3.60.6             
+[100] pkgconfig_2.0.3           TMB_1.9.17                spatstat.univar_3.1-3    
+[103] mathjaxr_1.8-0            EnvStats_3.1.0            aplot_0.2.5              
+[106] scatterplot3d_0.3-44      ape_5.8-1                 spatstat.sparse_3.1-0    
+[109] xtable_1.8-4              car_3.1-3                 plyr_1.8.9               
+[112] httr_1.4.7                rbibutils_2.3             tools_4.4.0              
+[115] globals_0.18.0            beeswarm_0.4.0            broom_1.0.8              
+[118] nlme_3.1-168              lambda.r_1.2.4            assertthat_0.2.1         
+[121] lme4_1.1-37               digest_0.6.37             numDeriv_2016.8-1.1      
+[124] Matrix_1.7-3              farver_2.1.2              tzdb_0.5.0               
+[127] remaCor_0.0.18            reshape2_1.4.4            yulab.utils_0.2.0        
+[130] glue_1.8.0                cachem_1.1.0              polyclip_1.10-7          
+[133] generics_0.1.4            Biostrings_2.72.1         mvtnorm_1.3-3            
+[136] parallelly_1.44.0         mnormt_2.1.1              statmod_1.5.0            
+[139] RcppHNSW_0.6.0            ScaledMatrix_1.12.0       carData_3.0-5            
+[142] minqa_1.2.8               pbapply_1.7-2             httr2_1.1.2              
+[145] spam_2.11-1               gson_0.1.0                graphlayouts_1.2.2       
+[148] gtools_3.9.5              ggsignif_0.6.4            RcppEigen_0.3.4.0.2      
+[151] shiny_1.10.0              GenomeInfoDbData_1.2.12   glmmTMB_1.1.11           
+[154] R.utils_2.13.0            memoise_2.0.1             rmarkdown_2.29           
+[157] scales_1.4.0              R.methodsS3_1.8.2         future_1.49.0            
+[160] RANN_2.6.2                Cairo_1.6-2               spatstat.data_3.1-6      
+[163] rstudioapi_0.17.1         cluster_2.1.8.1           mutoss_0.1-13            
+[166] spatstat.utils_3.1-3      hms_1.1.3                 fitdistrplus_1.2-2       
+[169] cowplot_1.1.3             colorspace_2.1-1          rlang_1.1.6              
+[172] DelayedMatrixStats_1.26.0 sparseMatrixStats_1.16.0  xts_0.14.1               
+[175] dotCall64_1.2             shinydashboard_0.7.3      ggforce_0.4.2            
+[178] laeken_0.5.3              mgcv_1.9-3                xfun_0.52                
+[181] e1071_1.7-16              TH.data_1.1-3             iterators_1.0.14         
+[184] abind_1.4-8               GOSemSim_2.30.2           treeio_1.28.0            
+[187] futile.options_1.0.1      bitops_1.0-9              Rdpack_2.6.4             
+[190] promises_1.3.2            scatterpie_0.2.4          RSQLite_2.3.11           
+[193] qvalue_2.36.0             sandwich_3.1-1            fgsea_1.30.0             
+[196] DelayedArray_0.30.1       proxy_0.4-27              GO.db_3.19.1             
+[199] compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31              
+[202] beachmat_2.20.0           listenv_0.9.1             Rcpp_1.0.14              
+[205] edgeR_4.2.2               workflowr_1.7.1           BiocSingular_1.20.0      
+[208] tensor_1.5                MASS_7.3-65               progress_1.2.3           
+[211] BiocParallel_1.38.0       babelgene_22.9            spatstat.random_3.3-3    
+[214] R6_2.6.1                  fastmap_1.2.0             multcomp_1.4-28          
+[217] fastmatch_1.1-6           rstatix_0.7.2             vipor_0.4.7              
+[220] TTR_0.24.4                ROCR_1.0-11               TFisher_0.2.0            
+[223] rsvd_1.0.5                vcd_1.4-13                nnet_7.3-20              
+[226] gtable_0.3.6              KernSmooth_2.23-26        miniUI_0.1.2             
+[229] deldir_2.0-4              htmltools_0.5.8.1         ggthemes_5.1.0           
+[232] bit64_4.6.0-1             spatstat.explore_3.4-2    lifecycle_1.0.4          
+[235] blme_1.0-6                msigdbdf_24.1.1           nloptr_2.2.1             
+[238] sass_0.4.10               vctrs_0.6.5               robustbase_0.99-4-1      
+[241] spatstat.geom_3.3-6       sn_2.1.1                  ggfun_0.1.8              
+[244] future.apply_1.11.3       bslib_0.9.0               pillar_1.10.2            
+[247] gplots_3.2.0              pcaMethods_1.96.0         locfit_1.5-9.12          
+[250] jsonlite_2.0.0            GetoptLong_1.0.5         </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-apple-darwin20
+Running under: macOS Ventura 13.7.5
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: Europe/Zurich
+tzcode source: internal
+
+attached base packages:
+[1] grid      stats4    stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] RColorBrewer_1.1-3          slingshot_2.12.0            TrajectoryUtils_1.12.0     
+ [4] princurve_2.1.6             NCmisc_1.2.0                VennDiagram_1.7.3          
+ [7] futile.logger_1.4.3         ggupset_0.4.1               gridExtra_2.3              
+[10] DOSE_3.30.5                 enrichplot_1.24.4           msigdbr_10.0.2             
+[13] org.Hs.eg.db_3.19.1         AnnotationDbi_1.66.0        clusterProfiler_4.12.6     
+[16] multtest_2.60.0             metap_1.12                  scater_1.32.1              
+[19] scuttle_1.14.0              destiny_3.18.0              circlize_0.4.16            
+[22] muscat_1.18.0               viridis_0.6.5               viridisLite_0.4.2          
+[25] lubridate_1.9.4             forcats_1.0.0               stringr_1.5.1              
+[28] purrr_1.0.4                 readr_2.1.5                 tidyr_1.3.1                
+[31] tibble_3.2.1                tidyverse_2.0.0             dplyr_1.1.4                
+[34] SingleCellExperiment_1.26.0 SummarizedExperiment_1.34.0 Biobase_2.64.0             
+[37] GenomicRanges_1.56.2        GenomeInfoDb_1.40.1         IRanges_2.38.1             
+[40] S4Vectors_0.42.1            BiocGenerics_0.50.0         MatrixGenerics_1.16.0      
+[43] matrixStats_1.5.0           pheatmap_1.0.12             ggpubr_0.6.0               
+[46] ggplot2_3.5.2               Seurat_5.3.0                SeuratObject_5.1.0         
+[49] sp_2.2-0                    runSeurat3_0.1.0            ExploreSCdataSeurat3_0.1.0 
+
+loaded via a namespace (and not attached):
+  [1] igraph_2.1.4              ica_1.0-3                 plotly_4.10.4            
+  [4] Formula_1.2-5             zlibbioc_1.50.0           tidyselect_1.2.1         
+  [7] bit_4.6.0                 doParallel_1.0.17         clue_0.3-66              
+ [10] lattice_0.22-7            rjson_0.2.23              blob_1.2.4               
+ [13] S4Arrays_1.4.1            pbkrtest_0.5.4            parallel_4.4.0           
+ [16] png_0.1-8                 plotrix_3.8-4             cli_3.6.5                
+ [19] ggplotify_0.1.2           goftest_1.2-3             VIM_6.2.2                
+ [22] variancePartition_1.34.0  BiocNeighbors_1.22.0      shadowtext_0.1.4         
+ [25] uwot_0.2.3                curl_6.2.2                tidytree_0.4.6           
+ [28] mime_0.13                 evaluate_1.0.3            ComplexHeatmap_2.20.0    
+ [31] stringi_1.8.7             backports_1.5.0           lmerTest_3.1-3           
+ [34] qqconf_1.3.2              httpuv_1.6.16             magrittr_2.0.3           
+ [37] rappdirs_0.3.3            splines_4.4.0             ggraph_2.2.1             
+ [40] sctransform_0.4.2         ggbeeswarm_0.7.2          DBI_1.2.3                
+ [43] jquerylib_0.1.4           smoother_1.3              withr_3.0.2              
+ [46] git2r_0.36.2              corpcor_1.6.10            reformulas_0.4.1         
+ [49] class_7.3-23              rprojroot_2.0.4           lmtest_0.9-40            
+ [52] tidygraph_1.3.1           formatR_1.14              colourpicker_1.3.0       
+ [55] htmlwidgets_1.6.4         fs_1.6.6                  ggrepel_0.9.6            
+ [58] labeling_0.4.3            fANCOVA_0.6-1             SparseArray_1.4.8        
+ [61] DESeq2_1.44.0             ranger_0.17.0             DEoptimR_1.1-3-1         
+ [64] reticulate_1.42.0         hexbin_1.28.5             zoo_1.8-14               
+ [67] XVector_0.44.0            knitr_1.50                ggplot.multistats_1.0.1  
+ [70] UCSC.utils_1.0.0          RhpcBLASctl_0.23-42       timechange_0.3.0         
+ [73] foreach_1.5.2             patchwork_1.3.0           caTools_1.18.3           
+ [76] data.table_1.17.2         ggtree_3.12.0             R.oo_1.27.1              
+ [79] RSpectra_0.16-2           irlba_2.3.5.1             fastDummies_1.7.5        
+ [82] gridGraphics_0.5-1        lazyeval_0.2.2            yaml_2.3.10              
+ [85] survival_3.8-3            scattermore_1.2           crayon_1.5.3             
+ [88] RcppAnnoy_0.0.22          progressr_0.15.1          tweenr_2.0.3             
+ [91] later_1.4.2               ggridges_0.5.6            codetools_0.2-20         
+ [94] GlobalOptions_0.1.2       aod_1.3.3                 KEGGREST_1.44.1          
+ [97] Rtsne_0.17                shape_1.4.6.1             limma_3.60.6             
+[100] pkgconfig_2.0.3           TMB_1.9.17                spatstat.univar_3.1-3    
+[103] mathjaxr_1.8-0            EnvStats_3.1.0            aplot_0.2.5              
+[106] scatterplot3d_0.3-44      ape_5.8-1                 spatstat.sparse_3.1-0    
+[109] xtable_1.8-4              car_3.1-3                 plyr_1.8.9               
+[112] httr_1.4.7                rbibutils_2.3             tools_4.4.0              
+[115] globals_0.18.0            beeswarm_0.4.0            broom_1.0.8              
+[118] nlme_3.1-168              lambda.r_1.2.4            assertthat_0.2.1         
+[121] lme4_1.1-37               digest_0.6.37             numDeriv_2016.8-1.1      
+[124] Matrix_1.7-3              farver_2.1.2              tzdb_0.5.0               
+[127] remaCor_0.0.18            reshape2_1.4.4            yulab.utils_0.2.0        
+[130] glue_1.8.0                cachem_1.1.0              polyclip_1.10-7          
+[133] generics_0.1.4            Biostrings_2.72.1         mvtnorm_1.3-3            
+[136] parallelly_1.44.0         mnormt_2.1.1              statmod_1.5.0            
+[139] RcppHNSW_0.6.0            ScaledMatrix_1.12.0       carData_3.0-5            
+[142] minqa_1.2.8               pbapply_1.7-2             httr2_1.1.2              
+[145] spam_2.11-1               gson_0.1.0                graphlayouts_1.2.2       
+[148] gtools_3.9.5              ggsignif_0.6.4            RcppEigen_0.3.4.0.2      
+[151] shiny_1.10.0              GenomeInfoDbData_1.2.12   glmmTMB_1.1.11           
+[154] R.utils_2.13.0            memoise_2.0.1             rmarkdown_2.29           
+[157] scales_1.4.0              R.methodsS3_1.8.2         future_1.49.0            
+[160] RANN_2.6.2                Cairo_1.6-2               spatstat.data_3.1-6      
+[163] rstudioapi_0.17.1         cluster_2.1.8.1           mutoss_0.1-13            
+[166] spatstat.utils_3.1-3      hms_1.1.3                 fitdistrplus_1.2-2       
+[169] cowplot_1.1.3             colorspace_2.1-1          rlang_1.1.6              
+[172] DelayedMatrixStats_1.26.0 sparseMatrixStats_1.16.0  xts_0.14.1               
+[175] dotCall64_1.2             shinydashboard_0.7.3      ggforce_0.4.2            
+[178] laeken_0.5.3              mgcv_1.9-3                xfun_0.52                
+[181] e1071_1.7-16              TH.data_1.1-3             iterators_1.0.14         
+[184] abind_1.4-8               GOSemSim_2.30.2           treeio_1.28.0            
+[187] futile.options_1.0.1      bitops_1.0-9              Rdpack_2.6.4             
+[190] promises_1.3.2            scatterpie_0.2.4          RSQLite_2.3.11           
+[193] qvalue_2.36.0             sandwich_3.1-1            fgsea_1.30.0             
+[196] DelayedArray_0.30.1       proxy_0.4-27              GO.db_3.19.1             
+[199] compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31              
+[202] beachmat_2.20.0           listenv_0.9.1             Rcpp_1.0.14              
+[205] edgeR_4.2.2               workflowr_1.7.1           BiocSingular_1.20.0      
+[208] tensor_1.5                MASS_7.3-65               progress_1.2.3           
+[211] BiocParallel_1.38.0       babelgene_22.9            spatstat.random_3.3-3    
+[214] R6_2.6.1                  fastmap_1.2.0             multcomp_1.4-28          
+[217] fastmatch_1.1-6           rstatix_0.7.2             vipor_0.4.7              
+[220] TTR_0.24.4                ROCR_1.0-11               TFisher_0.2.0            
+[223] rsvd_1.0.5                vcd_1.4-13                nnet_7.3-20              
+[226] gtable_0.3.6              KernSmooth_2.23-26        miniUI_0.1.2             
+[229] deldir_2.0-4              htmltools_0.5.8.1         ggthemes_5.1.0           
+[232] bit64_4.6.0-1             spatstat.explore_3.4-2    lifecycle_1.0.4          
+[235] blme_1.0-6                msigdbdf_24.1.1           nloptr_2.2.1             
+[238] sass_0.4.10               vctrs_0.6.5               robustbase_0.99-4-1      
+[241] spatstat.geom_3.3-6       sn_2.1.1                  ggfun_0.1.8              
+[244] future.apply_1.11.3       bslib_0.9.0               pillar_1.10.2            
+[247] gplots_3.2.0              pcaMethods_1.96.0         locfit_1.5-9.12          
+[250] jsonlite_2.0.0            GetoptLong_1.0.5         </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

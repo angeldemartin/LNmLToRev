@@ -1,0 +1,280 @@
+---
+title: "tradeSeqmLN"
+author: "A.DeMartin"
+date: "2025-05-12"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+library(slingshot)
+library(RColorBrewer)
+library(tradeSeq)
+library(scran)
+library(clusterExperiment)
+```
+
+### load sce mLNf3 slingshot v2
+```{r load sce mLNf3 slingshot}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_slingshot_v2_sce.rds"
+scemLNf3v2<- readRDS(fileNam)
+```
+
+## load object mLNEYFPf3
+```{r load object mLNf3}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_seurat.rds"
+seuratmLNf3 <- readRDS(fileNam)
+table(seuratmLNf3$dataset)
+```
+
+```{r}
+colPal <- c("#DAF7A6", "#FFC300", "#FF5733", "#C70039", "#900C3F", "#b66e8d",
+            "#61a4ba", "#6178ba", "#54a87f",  "#25328a",
+            "#b6856e", "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", 
+            "#7AA6DCFF", "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF",
+            "#4A6990FF")[1:length(unique(seuratmLNf3$RNA_snn_res.0.4))]
+names(colPal) <- unique(seuratmLNf3$RNA_snn_res.0.4)
+
+coltimepoint <- c("#440154FF", "#3B528BFF", "#21908CFF", "#5DC863FF")
+names(coltimepoint) <- c("E18", "P7", "3w", "8w")
+
+collocation <- c("#61baba", "#ba6161")
+names(collocation) <- c("iLN", "mLN")
+```
+
+```{r slingshot mLNf3-2 v2}
+clustDat <- data.frame(clustCol=colPal) %>% rownames_to_column(., "cluster")
+timepointDat <- data.frame(ageCol=coltimepoint) %>% rownames_to_column(., "timepoint")
+colDat <- data.frame(cluster=scemLNf3v2$RNA_snn_res.0.4) %>%
+  mutate(timepoint=scemLNf3v2$timepoint) %>% left_join(., clustDat, by="cluster") %>% 
+  left_join(., timepointDat, by="timepoint")
+```
+
+```{r slingshot-3 mLNf3 v2}
+plot(reducedDims(scemLNf3v2)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+# tradeSeq
+## evaluate k
+```{r eval k, eval=FALSE, include=TRUE}
+icMat <- evaluateK(counts = counts(scemLNf3v2), sds = SlingshotDataSet(scemLNf3v2), k = 3:10, 
+                   nGenes = 200, verbose = T)
+```
+
+## plot results from icMat
+```{r, eval=FALSE, include=TRUE}
+write.table(icMat, file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/icMat.txt", sep = "\t", quote = FALSE, row.names = TRUE)
+
+icMat_clean <- icMat[complete.cases(icMat), ]
+# Convert to data frame
+avg_df <- data.frame(
+  k = colnames(icMat_clean),
+  AvgAIC = colMeans(icMat_clean)
+)
+
+# Preserve gene order if needed
+avg_df$k <- factor(avg_df$k, levels = avg_df$k)
+
+ggplot(avg_df, aes(x = k, y = AvgAIC, group = 1)) +
+  geom_line(color = "steelblue") +
+  geom_point(color = "darkred", size = 1.5) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 6)
+  ) +
+  labs(x = "k", y = "Average AIC")
+```
+
+## subsample sce
+```{r, include=TRUE, eval=FALSE}
+dim(scemLNf3v2)
+```
+
+```{r, include=TRUE, eval=FALSE}
+cellSub <- data.frame(cell=colnames(scemLNf3v2)) %>% sample_n(5000)
+sceSub <- scemLNf3v2[,cellSub$cell]
+dim(sceSub)
+```
+
+## load sce Sub
+```{r}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_sce.rds"
+sceSub <- readRDS(fileNam)
+```
+
+```{r}
+colDat <- data.frame(cluster=sceSub$RNA_snn_res.0.4) %>%
+  mutate(timepoint=sceSub$timepoint) %>% left_join(., clustDat, by="cluster") %>% 
+  left_join(., timepointDat, by="timepoint")
+ 
+plot(reducedDims(sceSub)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceSub), lwd=2, col='black')
+```
+```{r}
+plot(reducedDims(sceSub)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceSub), lwd=2, col='black')
+```
+
+## fitGAM
+```{r, eval=FALSE,include=TRUE}
+## only hvg
+dec.sceSub <- modelGeneVar(sceSub)
+topHVG <- getTopHVGs(dec.sceSub, n=2000)
+
+pseudotime <- slingPseudotime(SlingshotDataSet(scemLNf3v2), na = FALSE) 
+pseudotimeSub <- pseudotime[cellSub$cell,]
+cellWeights <- slingCurveWeights(SlingshotDataSet(scemLNf3v2))
+cellWeightsSub <- cellWeights[cellSub$cell,]
+
+sceGAM <- fitGAM(counts = counts(sceSub), pseudotime = pseudotimeSub, 
+                cellWeights = cellWeightsSub,
+                nknots = 8, verbose = T, parallel=T, genes=topHVG)
+```
+
+
+```{r, eval=FALSE, include=TRUE}
+## save
+saveRDS(sceGAM, file =  "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_sceGAM.rds")
+
+saveRDS(sceSub, file =  "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_sce.rds")
+
+saveRDS(pseudotimeSub, file =  "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_pseudotime.rds")
+
+saveRDS(cellWeightsSub, file =  "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_cellweights.rds")
+
+saveRDS(topHVG, file =  "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_topHVG.rds")
+
+```
+
+## load GAM
+```{r}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_sceGAM.rds"
+sceGAM <- readRDS(fileNam)
+
+table(rowData(sceGAM)$tradeSeq$converged)
+```
+
+## Between lineage comparison
+```{r}
+patternRes <- patternTest(sceGAM, l2fc = log2(2))
+oPat <- order(patternRes$waldStat, decreasing = TRUE)
+head(rownames(patternRes)[oPat])
+```
+
+```{r}
+colLin <- c("#42a071","#900C3F","#424671","#e3953d","#b6856e")
+names(colLin) <- c("1", "2", "3", "4", "5")
+
+
+rankGene <- rownames(patternRes)[oPat]
+lapply(rankGene[1:50], function(selGene){
+  plotSmoothers(sceGAM, counts(sceGAM), gene = selGene, curvesCols=colLin) +
+    ggtitle(selGene) +
+    scale_color_manual(values=colLin)
+})
+```
+
+##cluster genes betweeen lineages
+```{r}
+nPointsClus <- 100
+```
+
+```{r cluster genes, include=TRUE, eval=FALSE}
+clusPat <- clusterExpressionPatterns(sceGAM, nPoints = nPointsClus,
+                                     genes = rankGene[1:500], nReducedDims=20)
+```
+
+##save clusPat
+```{r save, include=TRUE, eval=FALSE}
+saveRDS(clusPat, file =  "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_clusPat.rds")
+```
+
+##load clusPat
+```{r load}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/LNmLToRev_EYFP_mLNf3_slingshot_v2_TSsub5000_clusPat.rds"
+clusPat <- readRDS(fileNam)
+```
+
+```{r}
+clusterLabels <- primaryCluster(clusPat$rsec)
+
+cUniq <- unique(clusterLabels)
+cUniq <- cUniq[!cUniq == -1] # remove unclustered genes
+
+for (xx in cUniq) {
+  cId <- which(clusterLabels == xx)
+  p <- ggplot(data = data.frame(x = 1:nPointsClus,
+                                y = rep(range(clusPat$yhatScaled[cId, ]),
+                                        nPointsClus / 2)),
+              aes(x = x, y = y)) +
+    geom_point(alpha = 0) +
+    labs(title = paste0("Cluster ", xx),  x = "Pseudotime", y = "Normalized expression") +
+    theme_classic() +
+    theme(plot.title = element_text(hjust = 0.5))
+  for (ii in 1:length(cId)) {
+    geneId <- rownames(clusPat$yhatScaled)[cId[ii]]
+    p <- p +
+      geom_line(data = data.frame(x = rep(1:nPointsClus, 5),
+                                  y = clusPat$yhatScaled[geneId, ],
+                                  lineage = rep(1:5, each = nPointsClus)),
+                aes(col = as.character(lineage), group = lineage), lwd = 1.5)
+  }
+  p <- p + guides(color = FALSE) +
+    scale_color_manual(values = colLin,
+                       breaks = c("1", "2", "3", "4", "5"))  
+  print(p)
+}
+```
+
+```{r, include=TRUE, eval=FALSE}
+clustList <- lapply(cUniq, function(cl){
+  cId <- which(clusterLabels == cl)
+  genes <- rownames(clusPat$yhatScaled)[cId]
+}) 
+
+names(clustList) <- cUniq
+
+saveRDS(clustList, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/diffLinGeneCluster.rds")
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

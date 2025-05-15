@@ -44,6 +44,7 @@ library(ggupset)
 library(VennDiagram)
 library(NCmisc)
 library(slingshot)
+library(RColorBrewer)
 ```
 
 ## load object EYFPonly and preprocess
@@ -278,7 +279,6 @@ seuratLab <- subset(seuratLab, EYFP=="pos")
 table(seuratLab$label)
 ```
 
-######go on here
 
 ```{r transfer label-2}
 labCells <- data.frame(label=seuratLab$label) %>% rownames_to_column(., "cell")
@@ -336,7 +336,7 @@ write.table(markerGenes,
 genes <- data.frame(gene=rownames(seuratmLNf3)) %>% 
     mutate(geneID=gsub("^.*\\.", "", gene)) 
 
-selGenesAll <- data.frame(geneID=c("Rosa26eyfp", "Ccl19", "Ccl21a", "Cxcl13",
+selGenesAll <- data.frame(geneID=c("Rosa26eyfp","tdTomato", "Ccl19", "Ccl21a", "Cxcl13",
                                    "Fbln1", "Col15a1", "Cnn1", "Acta2","Myh11", "Rgs5",
                                    "Cox4i2", "Pi16", "Cd34", "Emp1", "Ogn","Des",
                                    "Fhl2")) %>% 
@@ -346,7 +346,7 @@ pList <- sapply(selGenesAll$gene, function(x){
 p <- FeaturePlot(seuratmLNf3, reduction = "umap", 
             features = x,
             cols=c("lightgrey", "darkred"),
-            order = F)+
+            order = F) +
   theme(legend.position="right")
   plot(p)
 })
@@ -403,6 +403,85 @@ lines(SlingshotDataSet(scemLNf3), lwd=2, col='black')
 ### save slingshot object
 ```{r save slingshot mLNf3, eval=FALSE, include=TRUE}
 saveRDS(sce, file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_slingshot_sce.rds")
+```
+
+## slingshot v2
+```{r slingshot mLNf3 v2, eval=FALSE, include=TRUE}
+sce <- as.SingleCellExperiment(seuratmLNf3)
+## include endpoint in slingshot analysis
+sce <- slingshot(sce, clusterLabels = 'RNA_snn_res.0.4', reducedDim = 'UMAP',
+                 start.clus = "1", times = sce$time, end.clus = c("12", "3", "4", "7", "6"),
+                 dist.method="simple", extend = 'n', stretch=0)
+```
+
+### load sce mLNf3 slingshot v2
+```{r load sce mLNf3 slingshot v2}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_slingshot_v2_sce.rds"
+scemLNf3v2<- readRDS(fileNam)
+```
+
+```{r slingshot mLNf3-2 v2}
+clustDat <- data.frame(clustCol=colPal) %>% rownames_to_column(., "cluster")
+timepointDat <- data.frame(ageCol=coltimepoint) %>% rownames_to_column(., "timepoint")
+colDat <- data.frame(cluster=scemLNf3v2$RNA_snn_res.0.4) %>%
+  mutate(timepoint=scemLNf3v2$timepoint) %>% left_join(., clustDat, by="cluster") %>% 
+  left_join(., timepointDat, by="timepoint")
+```
+
+```{r slingshot-1 mLNf3 v2}
+plot(reducedDims(scemLNf3v2)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, type = 'lineages', col = 'black')
+```
+
+```{r slingshot-2 mLNf3 v2}
+plot(reducedDims(scemLNf3v2)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, type = 'lineages', col = 'black')
+```
+
+```{r slingshot-3 mLNf3 v2}
+plot(reducedDims(scemLNf3v2)$UMAP, col = colDat$clustCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+
+```{r slingshot-4 mLNf3 v2}
+plot(reducedDims(scemLNf3v2)$UMAP, col = colDat$ageCol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+
+### save slingshot object v2
+```{r save slingshot mLNf3 v2, eval=FALSE, include=TRUE}
+saveRDS(sce, file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLNf3_slingshot_v2_sce.rds")
+```
+
+```{r}
+summary(scemLNf3v2$slingPseudotime_1)
+summary(scemLNf3v2$slingPseudotime_2)
+summary(scemLNf3v2$slingPseudotime_3)
+summary(scemLNf3v2$slingPseudotime_4)
+summary(scemLNf3v2$slingPseudotime_5)
+```
+```{r}
+colors <- colorRampPalette(rev(brewer.pal(11,'Spectral')))(100)
+plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=100)]
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+
+```{r}
+colors <- colorRampPalette(brewer.pal(11,'YlOrRd'))(100)
+plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=100)]
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+```{r}
+### color lineages
+colLin <- c("#e3953d", "#424671","#900C3F", "#42a071", "#b6856e")
+names(colLin) <- c("1", "2", "3", "4", "5")
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = "#bfbcbd", pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=4, col=colLin)
 ```
 
 ## session info

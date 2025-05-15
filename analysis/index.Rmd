@@ -8,6 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+## adult iLN and mLN
 ### Integrate data adult mLN and iLN. 
 Integrate
 [link](adult_mLN_iLN.html)
@@ -16,6 +17,17 @@ Integrate
 Characterize
 [link](adult_mLN_iLN2.html)
 
+## mLN
 ### Trajectory analysis mLN all timepoints. 
 Trajectory
 [link](mLNEYFPpos.html)
+
+### TradeSeq mLN. 
+TradeSeq
+[link](tradeSeq.html)
+
+## iLN
+### Trajectory analysis iLN all timepoints. 
+Trajectory
+[link](iLNEYFPpos.html)
+
