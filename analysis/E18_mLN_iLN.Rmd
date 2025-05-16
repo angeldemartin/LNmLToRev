@@ -1,0 +1,106 @@
+---
+title: "E18_mLN_iLN"
+author: "A.DeMartin"
+date: "2025-05-16"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+options(width = 100)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, dev = c("png", "pdf"))
+seed <- 1234
+```
+
+## load and preprocess
+### load packages
+```{r load packages, warning=FALSE, include=FALSE}
+library(ExploreSCdataSeurat3)
+library(runSeurat3)
+library(Seurat)
+library(ggpubr)
+library(pheatmap)
+library(SingleCellExperiment)
+library(dplyr)
+library(tidyverse)
+library(viridis)
+library(muscat)
+library(circlize)
+library(destiny)
+library(scater)
+library(metap)
+library(multtest)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(enrichplot)
+library(DOSE)
+library(grid)
+library(gridExtra)
+library(ggupset)
+library(VennDiagram)
+library(NCmisc)
+```
+
+### load object
+```{r load merged object all, eval=FALSE, include=FALSE}
+fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_allmerged_seurat.rds"
+seuratM <- readRDS(fileNam)
+table(seuratM$dataset)
+table(seuratM$RNA_snn_res.0.25)
+table(seuratM$orig.ident)
+```
+
+### subset E18
+```{r subset E18 datasets, eval=FALSE, include=FALSE}
+seuratA <- subset(seuratM, timepoint == "E18")
+table(seuratM$timepoint)
+table(seuratA$timepoint)
+
+#rerun seurat
+seuratA <- NormalizeData (object = seuratA)
+seuratA <- FindVariableFeatures(object = seuratA)
+seuratA <- ScaleData(object = seuratA, verbose = TRUE)
+seuratA <- RunPCA(object=seuratA, npcs = 30, verbose = FALSE)
+seuratA <- RunTSNE(object=seuratA, reduction="pca", dims = 1:20)
+seuratA <- RunUMAP(object=seuratA, reduction="pca", dims = 1:20)
+seuratA <- FindNeighbors(object = seuratA, reduction = "pca", dims= 1:20)
+
+res <- c(0.25, 0.6, 0.8, 0.4)
+for (i in 1:length(res)) {
+  seuratA <- FindClusters(object = seuratA, resolution = res[i], random.seed = 1234)
+}
+```
+
+### plot umaps
+#### clustering
+```{r umap clustering pre filter, eval=FALSE, include=FALSE}
+DimPlot(seuratA, reduction = "umap", group.by = "RNA_snn_res.0.25" ,
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+#### location
+```{r umap location pre filter, eval=FALSE, include=FALSE}
+DimPlot(seuratA, reduction = "umap", group.by = "location" ,
+        pt.size = 0.1, label = T, shuffle = T) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+## session info
+```{r date and session info}
+date()
+sessionInfo()
+```

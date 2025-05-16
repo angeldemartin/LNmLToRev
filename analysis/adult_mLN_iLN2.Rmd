@@ -88,6 +88,7 @@ knitr::kable(table(seuratA.int$label, seuratA.int$location))
 ```{r counts-2}
 knitr::kable(table(seuratA.int$location))
 ```
+
 ```{r counts-3}
 seuratSub <- subset(seuratA.int, Rosa26eyfp.Rosa26eyfp>0)
 eyfpPos <- colnames(seuratSub)
