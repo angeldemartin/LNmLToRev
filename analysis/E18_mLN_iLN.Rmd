@@ -273,10 +273,21 @@ names(colPal) <- unique(seuratE18fil.int$intCluster)
 ```
 
 ## Dimplot int data
-### clustering 0.25
+### clustering 
 ```{r umap int clustering 0.4}
 DimPlot(seuratE18fil.int, reduction = "umap",
         pt.size = 0.1, label = T, shuffle = T, cols = colPal) +
+  theme_bw() +
+  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  xlab("umap1") +
+  ylab("umap2")
+```
+
+### location
+```{r umap int location}
+DimPlot(seuratE18fil.int, reduction = "umap", group.by = "location", cols = collocation,
+        pt.size = 0.1, shuffle = T) +
   theme_bw() +
   theme(axis.text = element_blank(), axis.ticks = element_blank(), 
         panel.grid.minor = element_blank()) +
@@ -291,9 +302,9 @@ seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "0")] <- "Fb1"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "1")] <- "Prolif"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "2")] <- "Fb2"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "3")] <- "Fb3"
-seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "4")] <- "LN-VSMC"
+seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "4")] <- "VSMC"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "5")] <- "Mesothelial"
-seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "6")] <- "VSMC"
+seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "6")] <- "LN-VSMC"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "7")] <- "Fb4"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "8")] <- "Fb5"
 seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "9")] <- "Neuronal1"
@@ -338,21 +349,6 @@ DimPlot(seuratE18fil.int, reduction = "umap", group.by = "label", pt.size=0.5,
   theme(legend.position = "none") 
 ```
 
-### location
-```{r umap int location}
-DimPlot(seuratE18fil.int, reduction = "umap", group.by = "location", cols = collocation,
-        pt.size = 0.1, shuffle = T) +
-  theme_bw() +
-  theme(axis.text = element_blank(), axis.ticks = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  xlab("umap1") +
-  ylab("umap2")
-
-DimPlot(seuratE18fil.int, reduction = "umap", group.by = "location", pt.size=0.5,
-        cols = collocation, split.by = "location", shuffle = T)+
-  theme_void()
-```
-
 ### calculate cluster marker genes int
 ```{r cluster marker genes int}
 seuratE18fil.int <- JoinLayers(seuratE18fil.int)
@@ -372,7 +368,7 @@ markerGenes_int <- FindAllMarkers(seuratE18fil.int, only.pos=T) %>%
             #col.names=T)
 ```
 
-```{r featureplot sel genes fil int, eval=FALSE}
+```{r featureplot sel genes fil int}
 genes <- data.frame(gene=rownames(seuratE18fil.int)) %>% 
     mutate(geneID=gsub("^.*\\.", "", gene)) 
 
