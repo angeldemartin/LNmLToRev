@@ -32,6 +32,6 @@ Trajectory
 [link](iLNEYFPpos.html)
 
 ## E18 iLN and mLN
-### Integrate data E18 mLN and iLN. 
+### Integrate and characterize data E18 mLN and iLN. 
 Integrate
 [link](E18_mLN_iLN.html)
