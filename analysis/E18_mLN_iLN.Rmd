@@ -319,9 +319,7 @@ seuratE18fil.int$label[which(seuratE18fil.int$intCluster == "16")] <- "RBC"
 table(seuratE18fil.int$label)
 ##order
 seuratE18fil.int$label <- factor(seuratE18fil.int$label, levels = c("Fb1","Fb2","Fb3", "Fb4", "Fb5", "Fb6", "LN-VSMC", "VSMC", "Neuronal1", "Neuronal2", "Neuronal3", "Neuroendocrine", "Adipocytes", "Epithelial", "Mesothelial", "RBC", "Prolif"))
-
-
-
+table(seuratE18fil.int$label)
 
 colLab <- c("#42a071", "#900C3F","#b66e8d", "#61a4ba", "#424671", "#003C67FF",
             "#e3953d", "#714542", "#b6856e", "#FFC300", "#8F7700FF", "#3B3B3BFF",

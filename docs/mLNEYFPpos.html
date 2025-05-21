@@ -382,7 +382,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-05-15
+<strong>Last updated:</strong> 2025-05-21
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -544,6 +544,14 @@ data/LNmLToRev_EYFP_mLN_seurat.rds
 </tr>
 <tr>
 <td style="text-align:left;">
+/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/diffLinGeneCluster.rds
+</td>
+<td style="text-align:left;">
+data/tradeSEQ/diffLinGeneCluster.rds
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 /Users/immbio/Desktop/Project/Angelina/LNmLToRev/data//markerGenes_mLNEYFP_RNA_snn_res.0.4
 </td>
 <td style="text-align:left;">
@@ -598,15 +606,15 @@ data/LNmLToRev_EYFP_mLNf3_slingshot_v2_sce.rds
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtreece29d0d449c17a654f2352e5e3370e061a5a2202targetblankce29d0da">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtreef0ae62604be035da45cfd21b95b314fdfcbe6b37targetblankf0ae626a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/angeldemartin/LNmLToRev/tree/ce29d0d449c17a654f2352e5e3370e061a5a2202" target="_blank">ce29d0d</a>
+<a href="https://github.com/angeldemartin/LNmLToRev/tree/f0ae62604be035da45cfd21b95b314fdfcbe6b37" target="_blank">f0ae626</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtreece29d0d449c17a654f2352e5e3370e061a5a2202targetblankce29d0da"
+id="strongRepositoryversionstrongahrefhttpsgithubcomangeldemartinLNmLToRevtreef0ae62604be035da45cfd21b95b314fdfcbe6b37targetblankf0ae626a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -616,7 +624,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/angeldemartin/LNmLToRev/tree/ce29d0d449c17a654f2352e5e3370e061a5a2202" target="_blank">ce29d0d</a>.
+<a href="https://github.com/angeldemartin/LNmLToRev/tree/f0ae62604be035da45cfd21b95b314fdfcbe6b37" target="_blank">f0ae626</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -635,10 +643,12 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.DS_Store
+    Ignored:    analysis/.Rhistory
     Ignored:    data/files/
     Ignored:    data/tradeSEQ/
 
 Unstaged changes:
+    Modified:   analysis/E18_mLN_iLN.Rmd
     Modified:   analysis/mLNEYFPpos.Rmd
 
 </code></pre>
@@ -684,6 +694,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/d715ca309a2118f8f5cb9ae8d3f89a95b21a7054/analysis/mLNEYFPpos.Rmd" target="_blank">d715ca3</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-16
+</td>
+<td>
+may16
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/angeldemartin/LNmLToRev/d715ca309a2118f8f5cb9ae8d3f89a95b21a7054/docs/mLNEYFPpos.html" target="_blank">d715ca3</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-16
+</td>
+<td>
+may16
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -848,7 +892,10 @@ saveRDS(seuratmLN, file=&quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/d
 </div>
 <div id="load-object-mlneyfp" class="section level2">
 <h2>load object mLNEYFP</h2>
-<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLN_seurat.rds&quot;
+<pre class="r"><code>fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/tradeSEQ/diffLinGeneCluster.rds&quot;
+x&lt;- readRDS(fileNam)
+
+fileNam &lt;- &quot;/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_EYFP_mLN_seurat.rds&quot;
 seuratmLN &lt;- readRDS(fileNam)
 table(seuratmLN$dataset)</code></pre>
 <pre><code>
@@ -3642,12 +3689,11 @@ angeldemartin
 </table>
 </div>
 </div>
-<pre class="r"><code>### color lineages
-colLin &lt;- c(&quot;#42a071&quot;,&quot;#900C3F&quot;,&quot;#424671&quot;,&quot;#e3953d&quot;,&quot;#b6856e&quot;)
-names(colLin) &lt;- c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;)
+<pre class="r"><code>colors &lt;- colorRampPalette(brewer.pal(11,&#39;YlGnBu&#39;))(100)
+plotcol &lt;- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=100)]
 
-plot(reducedDims(scemLNf3v2)$UMAP, col = &quot;#bfbcbd&quot;, pch=16, asp = 1)
-lines(SlingshotDataSet(scemLNf3v2), lwd=4, col=colLin)</code></pre>
+plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col=&#39;black&#39;)</code></pre>
 <p><img src="figure/mLNEYFPpos.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
@@ -3673,6 +3719,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/angeldemartin/LNmLToRev/blob/d715ca309a2118f8f5cb9ae8d3f89a95b21a7054/docs/figure/mLNEYFPpos.Rmd/unnamed-chunk-4-1.png" target="_blank">d715ca3</a>
+</td>
+<td>
+angeldemartin
+</td>
+<td>
+2025-05-16
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/angeldemartin/LNmLToRev/blob/ce29d0d449c17a654f2352e5e3370e061a5a2202/docs/figure/mLNEYFPpos.Rmd/unnamed-chunk-4-1.png" target="_blank">ce29d0d</a>
 </td>
 <td>
@@ -3686,12 +3743,25 @@ angeldemartin
 </table>
 </div>
 </div>
+<pre class="r"><code>colors &lt;- colorRampPalette(brewer.pal(11,&#39;PuOr&#39;)[-6])(100)
+plotcol &lt;- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=100)]
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col=&#39;black&#39;)</code></pre>
+<p><img src="figure/mLNEYFPpos.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### color lineages
+colLin &lt;- c(&quot;#42a071&quot;,&quot;#900C3F&quot;,&quot;#424671&quot;,&quot;#e3953d&quot;,&quot;#b6856e&quot;)
+names(colLin) &lt;- c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;)
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = &quot;#bfbcbd&quot;, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=4, col=colLin)</code></pre>
+<p><img src="figure/mLNEYFPpos.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="session-info" class="section level2">
 <h2>session info</h2>
 <pre class="r"><code>date()</code></pre>
-<pre><code>[1] &quot;Thu May 15 16:28:37 2025&quot;</code></pre>
+<pre><code>[1] &quot;Wed May 21 17:00:31 2025&quot;</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.4.0 (2024-04-24)
 Platform: x86_64-apple-darwin20

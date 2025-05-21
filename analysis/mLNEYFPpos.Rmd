@@ -478,6 +478,24 @@ plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=1
 plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
 lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
 ```
+
+```{r}
+colors <- colorRampPalette(brewer.pal(11,'YlGnBu'))(100)
+plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=100)]
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+
+```{r}
+colors <- colorRampPalette(brewer.pal(11,'PuOr')[-6])(100)
+plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(scemLNf3v2)), breaks=100)]
+
+plot(reducedDims(scemLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(scemLNf3v2), lwd=2, col='black')
+```
+
+
 ```{r}
 ### color lineages
 colLin <- c("#42a071","#900C3F","#424671","#e3953d","#b6856e")
