@@ -33,5 +33,9 @@ Trajectory
 
 ## E18 iLN and mLN
 ### Integrate and characterize data E18 mLN and iLN. 
-Integrate
+E18
 [link](E18_mLN_iLN.html)
+
+### Integrate and characterize data E18 mLN and iLN EYFP positive cells only. 
+E18 EYFP
+[link](E18_mLN_iLN_EYFPonly.html)
