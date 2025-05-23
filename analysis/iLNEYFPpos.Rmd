@@ -432,6 +432,22 @@ lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col='black')
 ```
 
 ```{r}
+colors <- colorRampPalette(brewer.pal(11,'YlGnBu'))(100)
+plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(sceiLNf3v2)), breaks=100)]
+
+plot(reducedDims(sceiLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col='black')
+```
+
+```{r}
+colors <- colorRampPalette(brewer.pal(11,'PuOr')[-6])(100)
+plotcol <- colors[cut(slingAvgPseudotime(SlingshotDataSet(sceiLNf3v2)), breaks=100)]
+
+plot(reducedDims(sceiLNf3v2)$UMAP, col = plotcol, pch=16, asp = 1)
+lines(SlingshotDataSet(sceiLNf3v2), lwd=2, col='black')
+```
+
+```{r}
 ### color lineages
 colLin <- c("#42a071","#900C3F","#e3953d", "#424671", "#b6856e")
 names(colLin) <- c("1", "2", "3", "4", "5")
