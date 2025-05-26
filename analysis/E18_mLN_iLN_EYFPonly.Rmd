@@ -468,25 +468,25 @@ pList <- sapply(selGenes$gene, function(x){
 ### assign label
 ```{r assign label int clusters v2}
 seuratE18EYFPv2.int$label <- "label"
-seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "0")] <- "PRC1"
-seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "1")] <- "PRC2"
+seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "0")] <- "mLTo2"
+seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "1")] <- "mLTo3"
 seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "2")] <- "Prolif"
-seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "3")] <- "TRC"
-seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "4")] <- "LN-VSMC"
+seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "3")] <- "mLTo1"
+seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "4")] <- "mLTo4"
 seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "5")] <- "Neuronal1"
 seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "6")] <- "Mesothelial"
 seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "7")] <- "Neuronal2"
-seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "8")] <- "VSMC"
+seuratE18EYFPv2.int$label[which(seuratE18EYFPv2.int$intCluster == "8")] <- "mLTo5"
 
 table(seuratE18EYFPv2.int$label)
 ##order
-seuratE18EYFPv2.int$label <- factor(seuratE18EYFPv2.int$label, levels = c("TRC", "PRC1","PRC2", "LN-VSMC","VSMC","Prolif", "Mesothelial", "Neuronal1", "Neuronal2"))
+seuratE18EYFPv2.int$label <- factor(seuratE18EYFPv2.int$label, levels = c("mLTo1", "mLTo2", "mLTo3", "mLTo4", "mLTo5", "Neuronal1","Neuronal2", "Mesothelial", "Prolif"))
 table(seuratE18EYFPv2.int$label)
 
 colLab <- c("#900C3F","#b66e8d", "#003C67FF",
             "#e3953d", "#714542", "#b6856e", "lightblue","grey", "black")
 
-names(colLab) <- c( "TRC", "PRC1","PRC2", "LN-VSMC","Prolif","VSMC", "Mesothelial", "Neuronal1", "Neuronal2")
+names(colLab) <- c("mLTo1", "mLTo2", "mLTo3", "mLTo4", "mLTo5", "Neuronal1","Neuronal2", "Mesothelial", "Prolif")
 ```
 
 ### label
@@ -540,19 +540,30 @@ DotPlot(seuratE18EYFPv2.int, assay="RNA", features = rev(markerAll$geneID), scal
   xlab("") + ylab("")
 ```
 
-### save object EYFP int
-```{r, eval=FALSE, include=TRUE}
-saveRDS(seuratE18EYFPv2.int, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/E18EYFPv2_integrated_seurat.rds")
-```
-
 ### calculate marker genes label
 ```{r, eval=FALSE, include=FALSE, include=TRUE, eval=FALSE}
 ## calculate marker genes
+seuratE18EYFPv2.int <- JoinLayers(seuratE18EYFPv2.int)
 Idents(seuratE18EYFPv2.int) <- seuratE18EYFPv2.int$label
 levels(seuratE18EYFPv2.int)
 
 markerGenes <- FindAllMarkers(seuratE18EYFPv2.int, only.pos=T) %>% 
   dplyr::filter(p_val_adj < 0.01) 
+```
+
+```{r, include=FALSE, eval=FALSE}
+#save table
+write.table(markerGenes, 
+            file= "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/markerGenes_E18_EYFPpos_integrated_intCluster",
+            sep="\t",
+            quote=F,
+            row.names=F,
+            col.names=T)
+```
+
+### save object EYFP int
+```{r, eval=FALSE, include=TRUE}
+saveRDS(seuratE18EYFPv2.int, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/E18EYFPv2_integrated_seurat.rds")
 ```
 
 ## session info

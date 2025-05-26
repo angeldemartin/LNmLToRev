@@ -142,12 +142,6 @@ pList <- sapply(selGenes$gene, function(x){
 ```{r filter object, eval=FALSE, include=TRUE}
 ## filter out and Ptprc (cluster #7 and #14)
 
-
-##mesothelial cells (cluster#4) 
-##proliferating cells (cluster #1)
-##epithelial/neuronal (cluster #5 and #13)
-##pancreatic cells (#) 
-
 table(seuratA$RNA_snn_res.0.25)
 seuratF <- subset(seuratA, RNA_snn_res.0.25 %in% c("7", "14"), invert = TRUE)
 table(seuratF$RNA_snn_res.0.25)
@@ -209,7 +203,6 @@ DimPlot(seuratE18fil, reduction = "umap", group.by = "location",
   xlab("UMAP1") +
   ylab("UMAP2")
 ```
-
 
 ### save object fil
 ```{r, eval=FALSE, eval=FALSE, include=TRUE}
