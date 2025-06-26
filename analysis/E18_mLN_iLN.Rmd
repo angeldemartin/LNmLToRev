@@ -250,7 +250,16 @@ saveRDS(seuratE18fil.int, file="/Users/immbio/Desktop/Project/Angelina/LNmLToRev
 fileNam <- "/Users/immbio/Desktop/Project/Angelina/LNmLToRev/data/LNmLToRev_E18fil_integrated_seurat.rds"
 seuratE18fil.int <- readRDS(fileNam)
 ```
+### counts
+```{r counts}
+seuratE18fil.intSub <- subset(seuratE18fil.int, Rosa26eyfp.Rosa26eyfp>0)
+eyfpPos <- colnames(seuratE18fil.intSub)
+seuratE18fil.int$EYFP <- "neg"
+seuratE18fil.int$EYFP[which(colnames(seuratE18fil.int)%in%eyfpPos)] <- "pos"
 
+table(seuratE18fil.int$orig.ident)
+table(seuratE18fil.int$EYFP)
+```
 
 ```{r set default assay int object}
 DefaultAssay(object = seuratE18fil.int) <- "RNA"
@@ -363,7 +372,7 @@ markerGenes_int <- FindAllMarkers(seuratE18fil.int, only.pos=T) %>%
 genes <- data.frame(gene=rownames(seuratE18fil.int)) %>% 
     mutate(geneID=gsub("^.*\\.", "", gene)) 
 
-selGenes <- data.frame(geneID=c("Ptprc", "Msln", "Mki67", "Kcnn3", "Tcf21", "Pecam1", "Lyve1", "Ccl21a", "Icam1", "Cd34", "Rosa26eyfp", "Krt19", "Acta2","Myh11", "Cxcl13", "Epcam", "Adipoq")) %>% 
+selGenes <- data.frame(geneID=c("Ptprc", "Msln", "Mki67", "Kcnn3", "Tcf21", "Pecam1", "Lyve1", "Ccl21a", "Icam1", "Cd34", "Rosa26eyfp", "Krt19", "Acta2","Myh11", "Cxcl13", "Epcam", "Adipoq", "Col1a2" ,"Col1a1")) %>% 
   left_join(., genes, by = "geneID") 
 
 pList <- sapply(selGenes$gene, function(x){
